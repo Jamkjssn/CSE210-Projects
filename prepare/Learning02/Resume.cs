@@ -5,14 +5,13 @@ public class Resume
     public string Name { get; set; }   
 
 
-    public void Display(){
-        Console.WriteLine($"Name:\n\t{Name}");
-        Console.WriteLine("Jobs:");
-
-        foreach (Job job in Jobs){
+    public void Display()
+    {
+        Console.WriteLine($"Name:\n\t{Name}\nJobs:");
+        foreach (Job j in Jobs)
+        {
             Console.Write("\t");
-            job.Display();
+            j.Display();
         }
     }
-
 }
