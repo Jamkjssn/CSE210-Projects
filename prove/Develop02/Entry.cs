@@ -6,7 +6,7 @@ public string Response { get; set; }
 
 public void DisplayEntry()
 {
-    Console.WriteLine($"{Date} - Prompt:{Prompt}\n{Response}\n");
+    Console.WriteLine($"{Date} - Prompt: {Prompt}\n{Response}\n");
 }
     
 }

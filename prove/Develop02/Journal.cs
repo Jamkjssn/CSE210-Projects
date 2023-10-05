@@ -3,11 +3,15 @@ public class Journal
 public List<Entry> Entries { get; set; }
 public string Owner { get; set; }
 
+public Journal()
+{
+    Entries = new List<Entry>();
+}
 public void WriteNew(Prompts prompts)
 {
     Entry entry = new()
     {
-        Date = DateTime.Now.ToString("MM-dd-yy"),
+        Date = DateTime.Now.ToShortDateString(),
         Prompt = prompts.GetPrompt(),
     };
     Console.WriteLine($"{entry.Prompt}");
@@ -18,6 +22,7 @@ public void WriteNew(Prompts prompts)
 
 public void DisplayEntries()
 {
+    Console.WriteLine("");
     foreach(Entry e in Entries)
     {
         e.DisplayEntry();
@@ -33,8 +38,4 @@ public void Load()
 
 }
 
-    internal void WriteNew()
-    {
-        throw new NotImplementedException();
-    }
 }

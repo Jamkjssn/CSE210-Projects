@@ -1,13 +1,23 @@
 public class Prompts
 {
 public List<string> AllPrompts { get; set; }
-
+public Prompts()
+{
+    AllPrompts = new List<string>
+    {
+        "Who was the most interesting person I interacted with today?",
+        "What was the best part of my day?",
+        "How did I see the hand of the Lord in my life today?",
+        "What was the strongest emotion I felt today?",
+        "If I had one thing I could do over today, what would it be?"
+    };
+}
 public void AddPrompt()
 {
     Console.WriteLine("What is the prompt that you would like to add to the list of possible prompts? ");
-    string newPropmt = Console.ReadLine();
-    AllPrompts.Add(newPropmt);
-    Console.WriteLine("Your prompt has been added!");
+    string newPrompt = Console.ReadLine();
+    AllPrompts.Add(newPrompt);
+    Console.WriteLine("Your prompt has been added!\n");
 }
 public void RemovePrompt()
 {
@@ -20,18 +30,17 @@ public void RemovePrompt()
     else{
     int promptRemoveNumber;
     do{
-    Console.WriteLine("Here is a list of the existing prompts: ");
     ViewPrompts();
-    Console.Write("Enter the number of the prompt you would like to remove or enter 0 if you would no longer like to remove a prompt: ");
+    Console.Write("\nEnter the number of the prompt you would like to remove or enter 0 if you would no longer like to remove a prompt: ");
     string toBeRemovedStr = Console.ReadLine();
     promptRemoveNumber = int.Parse(toBeRemovedStr);
     //Make sure they entered a valid number
-    if (promptRemoveNumber < -1 || promptRemoveNumber > AllPrompts.Count-1)
+    if (promptRemoveNumber < -1 || promptRemoveNumber > AllPrompts.Count)
     {
         Console.WriteLine("That was not a valid prompt number, try again.");
     }
     }
-    while (promptRemoveNumber < -1 || promptRemoveNumber > AllPrompts.Count-1);
+    while (promptRemoveNumber < -1 || promptRemoveNumber > AllPrompts.Count);
     if (promptRemoveNumber != 0)//If they enter 0 this should be skipped and nothing happens
     {
     AllPrompts.RemoveAt(promptRemoveNumber-1);
@@ -47,12 +56,14 @@ public string GetPrompt()
 }
 public void ViewPrompts()
 {
+    int count = 1;
+    Console.WriteLine("Here is a list of the existing prompts: ");
     foreach(string prompt in AllPrompts)
     {
-        int count = 1;
         Console.WriteLine($"Prompt {count}: {prompt}");
         count ++; 
     }
+    Console.WriteLine();
 }
 
 }
