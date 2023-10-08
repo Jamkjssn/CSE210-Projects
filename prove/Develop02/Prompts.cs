@@ -12,7 +12,19 @@ public Prompts()
         "What was the best part of my day?",
         "How did I see the hand of the Lord in my life today?",
         "What was the strongest emotion I felt today?",
-        "If I had one thing I could do over today, what would it be?"
+        "If I had one thing I could do over today, what would it be?",
+        "Who was the most interesting person I interacted with today?",
+        "What was the best part of my day?",
+        "How did I see the hand of the Lord in my life today?",
+        "What was the strongest emotion I felt today?",
+        "If I had one thing I could do over today, what would it be?",
+        "What are three things that made you smile today, and why did they have that effect on you?",
+        "If you could travel to any place in the world right now, where would you go and what would you do there?",
+        "Describe a recent challenge you faced and how you overcame it. What did you learn from the experience?",
+        "Write a letter to your future self five years from now. What advice and encouragement would you offer?",
+        "If you had an entire day with no obligations or responsibilities, how would you spend it?",
+        "Reflect on a time when you stepped out of your comfort zone. How did it feel, and what did you gain from the experience?",
+        "List five things you are grateful for today, no matter how small or ordinary they may seem."
     };
     DefaultPrompts = 1; //Set to one because initial prompts are default
 }
