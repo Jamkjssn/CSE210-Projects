@@ -11,7 +11,6 @@ class Program
         //Initialize the default empty Journal
         Journal journal1 = new();
         Journal activeJournal = journal1;
-        activeJournal.Owner = "Unknown";
 
         //Initialize prompts
         Prompts prompts = new();
@@ -25,12 +24,6 @@ class Program
 
         if (userChoice == 1)//Write
         {
-            if (activeJournal.Owner == "Unknown")
-            {
-                Console.WriteLine("Before writing, who's Journal is this? ");
-                activeJournal.Owner = Console.ReadLine();
-                Console.WriteLine("Thanks! Heres your prompt now: ");
-            }
             activeJournal.WriteNew(prompts);
         }
 
@@ -41,21 +34,32 @@ class Program
 
         else if (userChoice == 3)//Load
         {
-            //Change activeJournal to be the journal found at the file destination
+            activeJournal = Journal.Load(); //Change activeJournal to be the journal found at the file destination
         }
 
         else if (userChoice == 4)//Save
         {
-            // Maybe add a functionality for a saved journal to have an owner
+            activeJournal.Save(); // Maybe add a functionality for a saved journal to have an owner
+            if(prompts.DefaultPrompts == 0){
+                Console.Write("Would you like to save your prompts with your journal? (y/n) ");
+                string promptsAnswer = Console.ReadLine();
+                if (promptsAnswer == "y")
+                {
+                    prompts.SavePrompts(activeJournal);
+                    Console.WriteLine("Your prompts have been saved");
+                }
+                else{
+                    Console.WriteLine("Your prompts were not saved");
+                }
+            }
         }
 
         else if (userChoice == 5)//Prompt Settings
         {
-            //Begin Loop for Prompt Settings Menu
             int endPrompt = 0;
-            while (endPrompt == 0){
-                //This will be where they can edit prompts
-            int userChoicePrompt = PromptMenu();
+            while (endPrompt == 0){ //Begin Loop for Prompt Settings Menu
+
+            int userChoicePrompt = PromptMenu(); //This will be where they can edit prompts
 
             if (userChoicePrompt == 1)//AddPrompt
             {
@@ -74,12 +78,12 @@ class Program
 
             else if (userChoicePrompt == 4)//Load Propmts
             {
-                
+                prompts.LoadPrompts();
             }
 
             else if (userChoicePrompt == 5)//Save Prompts
             {
-                                
+                prompts.SavePrompts(activeJournal);         
             }
 
             else if (userChoicePrompt == 6)//Return to main menu
@@ -88,7 +92,7 @@ class Program
                 endPrompt = 1;
             }
 
-            else //Error
+            else //Error (This should never run)
             {
                 Console.WriteLine("An error has occured, please restart the program.");
                 endPrompt = 1;
@@ -102,7 +106,7 @@ class Program
             end = 1;
         }
 
-        else //Error
+        else //Error (This should never run)
         {
             Console.WriteLine("An error has occured, please restart the program.");
             end = 1;
@@ -115,12 +119,12 @@ class Program
         int userChoice;
         do
         {
-            Console.WriteLine("\t---| Menu |---\n1. Write \n2. Display \n3. Load \n4. Save \n5. Prompt Settings \n6. Quit\n");
+            Console.WriteLine("\t---| Menue |---\n1. Write \n2. Display \n3. Load \n4. Save \n5. Prompt Settings \n6. Quit\n"); //Main Menue
             Console.Write("What would you like to do? ");
             string userChoiceStr = Console.ReadLine();
             userChoice = int.Parse(userChoiceStr);
 
-            if (userChoice <= 0 || userChoice > 6)
+            if (userChoice <= 0 || userChoice > 6) //Invalid number
             {
                 Console.WriteLine("The number you entered is invalid, Please try again.");
             }
