@@ -112,8 +112,8 @@ public static Journal Load()
             }
         }
     }
-    // try
-    // {
+    try
+    {
         List<Entry> newentries = new();
         string[] lines = System.IO.File.ReadAllLines(fileName);
         foreach (string line in lines)
@@ -134,14 +134,14 @@ public static Journal Load()
             JournalFile = fileName
         };
         return journal;
-    // }
-    // catch //Will catch anything wrong with reading the file
-    // {
-    //     Console.WriteLine("Something went wrong, try again.");
-    //     //Because it cant return nothing it will return an empty journal
-    //     Journal emptyjournal = new();
-    //  return emptyjournal;
-    // }
+    }
+    catch //Will catch anything wrong with reading the file
+    {
+        Console.WriteLine("Something went wrong, try again.");
+        //Because it cant return nothing it will return an empty journal
+        Journal emptyjournal = new();
+     return emptyjournal;
+    }
 }
 
 }
