@@ -8,8 +8,8 @@ class Program
         Console.WriteLine("Welcome to scripture memorization!!!");// Initial Welcome message
         Console.WriteLine("What scripture would you like to memorize today?");
 
-        // string newreference = Console.ReadLine();
-        string newreference = "1 Nephi 1:1";
+        string newreference = Console.ReadLine();
+        // string newreference = "1 Nephi 1:1";//Just for testing
         Reference reference = new();
         reference.SetReference(newreference);
 
@@ -86,7 +86,6 @@ class Program
                     if (word.isHidden != hide)
                     {
                         word.ToggleHidden();
-                        wordChanged = true;
                         return false;
                     }
                 }
