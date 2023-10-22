@@ -6,8 +6,10 @@ public class Reference
 public string ScriptureBook { get; set; }
 public int Chapter { get; set; }
 public List<int> Verses { get; set; }
+public string fullReference { get; set; }
 public void SetReference(string reference)
 {
+    fullReference = reference;
     Verses = new List<int>();
     string[] splitbook = reference.Split(' ');
     int referenceLength = splitbook.Length; //This is important for later but has to be done now
