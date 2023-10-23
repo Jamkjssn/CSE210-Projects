@@ -1,31 +1,39 @@
 public class Word
 {
-    public string theWord { get; set; }
-    public bool isHidden { get; set; }
-    public string hidden { get; set; }
-    public string shown { get; set; }
+    private string _theWord { get; set; }
+    private bool isHidden { get; set; }
+    private string _hidden { get; set; }
+    private string _shown { get; set; }
     public Word(string word)
     {
-        theWord = word;
-        shown = word;
+        _theWord = word;
+        _shown = word;
         isHidden = false;
-        int wordlength = theWord.Length;
+        int wordlength = _theWord.Length;
         for (int i = 0; i < wordlength; i++)
         {
-            hidden = $"{hidden}_";
+            _hidden = $"{_hidden}_";
         }
     }
     public void ToggleHidden()
     {
         if (isHidden == true)
         {
-            shown = theWord;
+            _shown = _theWord;
             isHidden = false;
         }
         else
         {
-            shown = hidden;
+            _shown = _hidden;
             isHidden = true;
         }
+    }
+    public void PrintShown()
+    {
+        Console.Write($"{_shown} ");
+    }
+    public bool IsWordHidden()
+    {
+        return isHidden;
     }
 }

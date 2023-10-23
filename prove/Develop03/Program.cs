@@ -9,20 +9,12 @@ class Program
         Console.WriteLine("What scripture would you like to memorize today?");
 
         string newreference = Console.ReadLine();
+        Console.WriteLine("");
         // string newreference = "1 Nephi 1:1";//Just for testing
         Reference reference = new();
         reference.SetReference(newreference);
 
-        Console.Write($"{reference.ScriptureBook} Chapter {reference.Chapter} Verse(s):");//Display verse selected, Might delete this later
-        foreach (int verse in reference.Verses)
-        {
-            Console.Write($"{verse} ");
-        }
-        Console.WriteLine(' ');
-        Verse verse1 = new();//All of the setup for the verse
-        verse1.GetVerse(reference);
-        verse1.ParseVerse();
-        verse1.GetWordList();
+        Verse verse1 = new(reference);//All of the setup for the verse
         bool memorized = false;//Initialize bools for while loops
         bool end = false;
         while (!end){
@@ -34,7 +26,6 @@ class Program
             if(continueanswer == "")
             {
                 memorized = ToggleHiddenWord(verse1, true);//This will hide one random non-hidden word
-                Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n");
             }
             else if (continueanswer.ToLower() == "back")
             {
@@ -47,8 +38,9 @@ class Program
             else if (continueanswer.ToLower() == "exit")
             {
                 break;
-            }
         }
+        }
+
         if (memorized)
         {
             Console.WriteLine("Congratulations on memorizing the scripture! Would you like to try a new scripture? (yes/no) ");
@@ -66,24 +58,24 @@ class Program
     }
     public static bool ToggleHiddenWord(Verse verse1, bool hide)
     {
-        int listlen = verse1.shownList.Count;
+        int listlen = verse1.GetListLen();
         bool wordChanged = false;
         int count = 0;
         while (!wordChanged)
         {
             Random random = new();
             int wordToHide = random.Next(0, listlen);
-            Word word = verse1.shownList[wordToHide];
-            if (word.isHidden != hide)//we want stuff thats hidden when we're showing and shown when we're hiding.
+            Word word = verse1.GetWord(wordToHide);
+            if (word.IsWordHidden() != hide)//we want stuff thats hidden when we're showing and shown when we're hiding.
             {
                 word.ToggleHidden();
                 return false;
             }
             if (count > 200)//If it didn't find it in 200 tries its time to brute force.
             {
-                foreach(Word theword in verse1.shownList)
+                foreach(Word theword in verse1.GetShownList())
                 {
-                    if (word.isHidden != hide)
+                    if (word.IsWordHidden() != hide)
                     {
                         word.ToggleHidden();
                         return false;
@@ -97,11 +89,7 @@ class Program
     }
     public static void PrintVerse(Verse verse, Reference reference)
     {
-        Console.WriteLine($"{reference.fullReference}");
-        foreach (Word word in verse.shownList)
-        {
-            Console.Write($"{word.shown} ");
-        }
-        Console.WriteLine("");
+        reference.PrintReference();
+        verse.PrintVerse();
     }
 }

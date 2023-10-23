@@ -3,38 +3,61 @@ using CsvHelper;
 using CsvHelper.Configuration;
 public class Verse
 {
-    public string theVerse { get; set; }
-    public List<string> parsedVerse { get; set; }
-    public List<Word> wordList { get; set; }
-    public List<Word> shownList { get; set; }
-    public Verse()
+    private string _theVerse { get; set; }
+    private List<string> _parsedVerse { get; set; }
+    private List<Word> _wordList { get; set; }
+    private List<Word> _shownList { get; set; }
+    public Verse(Reference reference)
     {
-        parsedVerse = new();
-        wordList = new();
-        shownList = new();
+        _parsedVerse = new();
+        _wordList = new();
+        _shownList = new();
+        FindVerse(reference);
+        ParseVerse();
+        SetWordList();
     }
-    public void ParseVerse()
+    private void ParseVerse()
     {
-        string[] verse = theVerse.Split(" ");
+        string[] verse = _theVerse.Split(" ");
         foreach (string word in verse)
         {
-            parsedVerse.Add(word);
+            _parsedVerse.Add(word);
         }        
     }
-    public void GetWordList()
+    public int GetListLen()
     {
-        foreach(string newWord in parsedVerse)
-        {
-            wordList.Add(new Word(newWord));
-        }
-        shownList = wordList;
+        return _shownList.Count;
     }
-    public void GetVerse(Reference reference)
+    public List<Word> GetShownList()
+    {
+        return _shownList;
+    }
+    private void SetWordList()
+    {
+        foreach(string newWord in _parsedVerse)
+        {
+            _wordList.Add(new Word(newWord));
+        }
+        _shownList = _wordList;
+    }
+    public Word GetWord(int index)
+    {
+        return _shownList[index];
+    }
+    public void PrintVerse()
+    {
+        foreach (Word word in _shownList)
+        {
+            word.PrintShown();
+        }
+        Console.WriteLine(" ");
+    }
+    private void FindVerse(Reference reference)
     {
         string scriptureFile = "C:\\CSE 210\\CSE210-Projects\\prove\\Develop03\\lds-scriptures-2020.12.08\\csv\\lds-scriptures1.csv";
-        string targetBook = reference.ScriptureBook;
-        int targetChapter = reference.Chapter;
-        List<int> targetVerses = reference.Verses;
+        string targetBook = reference.GetBook();
+        int targetChapter = reference.GetChapter();
+        List<int> targetVerses = reference.GetVerses();
         List<bool> found = new List<bool>();
         foreach (int i in targetVerses)
         {
@@ -62,7 +85,7 @@ public class Verse
                             {
                                 // Match found
                                 found[i] = true;
-                                theVerse = $"{theVerse}\n" + csv.GetField<string>(16);
+                                _theVerse = $"{_theVerse}\n" + csv.GetField<string>(16);
                             }
                             i++;
                         }
