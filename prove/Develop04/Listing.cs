@@ -25,7 +25,6 @@ public class Listing : Activity
         Console.Clear();
         Console.WriteLine($"You listed {_userlist.Count} items!");
         DesplayFinish();
-
     }
     public void GetUserList(int duration)
     {

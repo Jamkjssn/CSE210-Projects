@@ -30,8 +30,10 @@ class Program
             {
                 List<string> reflectionPrompts = new()
                 {
-                    "Prompts Placeholder",
-                    "Prompts Placeholder1"
+                    "Think of a time when you stood up for someone else.",
+                    "Think of a time when you did something really difficult.",
+                    "Think of a time when you helped someone in need.",
+                    "Think of a time when you did something truly selfless."
                 };
                 Reflecting reflecting = new("This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.", reflectionPrompts);
                 _reflectingSeconds += reflecting.GetDuration();
@@ -40,8 +42,11 @@ class Program
             {
                 List<string> listingPrompts = new()
                 {
-                    "Prompts Placeholder",
-                    "Prompts Placeholder1"
+                    "Who are people that you appreciate?",
+                    "What are personal strengths of yours?",
+                    "Who are people that you have helped this week?",
+                    "When have you felt the Holy Ghost this month?",
+                    "Who are some of your personal heroes?"
                 };
                 Listing listing = new("This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.", listingPrompts);
                 _listingSeconds += listing.GetDuration();
@@ -52,6 +57,9 @@ class Program
                 Console.WriteLine($"You have completed {_breathingSeconds} seconds of the Breathing activity");
                 Console.WriteLine($"You have completed {_reflectingSeconds} seconds of the Reflecting activity");
                 Console.WriteLine($"You have completed {_listingSeconds} seconds of the Listing activity");
+                Console.WriteLine("Press Enter to return to the menu");
+                while (Console.ReadKey().Key != ConsoleKey.Enter){}
+                Console.Clear();
             }
             else if (userchoice == 5) //Quit
             {
@@ -72,15 +80,16 @@ class Program
             Console.WriteLine("  1. Start Breathing Activity");
             Console.WriteLine("  2. Start Reflecting Activity");
             Console.WriteLine("  3. Start Listing Activity");
-            Console.WriteLine("  4. Quit ");
+            Console.WriteLine("  4. View Progress ");
+            Console.WriteLine("  5. Quit ");
             Console.Write("Select a choice from the menu: ");
             try
             {
                 string choice = Console.ReadLine();
                 int choiceInt = int.Parse(choice);
-                while(choiceInt > 4 || choiceInt < 0)
+                while(choiceInt > 5 || choiceInt < 0)
                 {
-                    Console.WriteLine("Please enter a number between 1 and 4 ");
+                    Console.WriteLine("Please enter a number between 1 and 5 ");
                     choice = Console.ReadLine();
                     choiceInt = int.Parse(choice);
                 }
