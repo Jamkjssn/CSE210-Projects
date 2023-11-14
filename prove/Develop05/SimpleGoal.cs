@@ -1,9 +1,6 @@
 public class SimpleGoal : Goal
 {
-    public SimpleGoal(string name, string goalType = "simplegoal") : base(goalType, name)
-    {
-
-    }
+    public SimpleGoal(string name, string goalType = "simplegoal") : base(goalType, name) {}
     public override void Setgoal(string description, int importanceRating, int difficultyRating)
     {
         _description = description; //Set the values to what was provided by the user

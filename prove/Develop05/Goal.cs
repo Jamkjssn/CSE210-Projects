@@ -8,6 +8,8 @@ public class Goal
     protected bool _isComplete;
     protected double _importanceRating;
     protected double _difficultyRating;
+    protected DateTime _creationTimestamp;
+    protected DateTime _completionTimestamp;
     public Goal(string goalType, string name)
     {
         _goaltype = goalType;
