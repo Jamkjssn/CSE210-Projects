@@ -11,4 +11,14 @@ public class SimpleGoal : Goal
         _difficultyRating = difficultyRating;
         //Before calling this get the info you need to set the goal
     }
+    public override double AwardPoint() //Points awarded upon completion
+    {
+        double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;
+        double pointsToAward = weight*250;
+        return pointsToAward;
+    }
+    public override void CompleteGoal()
+    {
+        _isComplete = true;
+    }
 }

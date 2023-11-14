@@ -12,14 +12,16 @@ public class Goal
     {
         _goaltype = goalType;
         _name = name;
+        _isComplete = false;
     }
     public virtual void CompleteGoal()
     {
         //Polymorphism method. This will be different in inherited classes.
     }
-    public virtual void AwardPoint()
+    public virtual double AwardPoint()
     {
         //Polymorphism method. This will be different in inherited classes.
+        return -1;
     }
     public virtual void Setgoal(string description, int importanceRating, int difficultyRating)
     {
