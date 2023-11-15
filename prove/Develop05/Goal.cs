@@ -20,7 +20,7 @@ public class Goal
     {
         //Polymorphism method. This will be different in inherited classes.
     }
-    public virtual double AwardPoint()
+    public virtual double AwardPoints()
     {
         //Polymorphism method. This will be different in inherited classes.
         return -1;
