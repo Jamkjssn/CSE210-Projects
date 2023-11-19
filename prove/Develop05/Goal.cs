@@ -16,9 +16,10 @@ public class Goal
         _name = name;
         _isComplete = false;
     }
-    public virtual void CompleteGoal()
+    public virtual double CompleteGoal()
     {
         //Polymorphism method. This will be different in inherited classes.
+        return AwardPoints();
     }
     public virtual double AwardPoints()
     {
@@ -27,7 +28,10 @@ public class Goal
     }
     public virtual void Setgoal(string description, int importanceRating, int difficultyRating)
     {
-        //Setting the goal will be different for each goal type. 
+        _description = description; //Set the values to what was provided by the user
+        _importanceRating = importanceRating;
+        _difficultyRating = difficultyRating;
+        //Before calling this get the info you need to set the goal
     }
     public virtual void DesplayGoal()
     {

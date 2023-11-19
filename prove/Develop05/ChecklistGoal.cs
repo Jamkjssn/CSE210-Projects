@@ -8,21 +8,17 @@ public class ChecklistGoal : Goal
     {
         _completedParts = 0;
     }
-    public void MakeProgress()
+    public override double CompleteGoal()
     {
         if (_completedParts+1 == _totalParts)
         {
-            CompleteGoal();
+            _isComplete = true;
         }
         else
         {
             _completedParts++;
         }
-        AwardPoints();
-    }
-    public override void CompleteGoal()
-    {
-        _isComplete = true;
+        return AwardPoints();
     }
     public override void Setgoal(string description, int importanceRating, int difficultyRating)
     {

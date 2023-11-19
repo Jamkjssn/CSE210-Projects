@@ -1,13 +1,6 @@
 public class SimpleGoal : Goal
 {
     public SimpleGoal(string name, string goalType = "SimpleGoal") : base(goalType, name) {}
-    public override void Setgoal(string description, int importanceRating, int difficultyRating)
-    {
-        _description = description; //Set the values to what was provided by the user
-        _importanceRating = importanceRating;
-        _difficultyRating = difficultyRating;
-        //Before calling this get the info you need to set the goal
-    }
     public override double AwardPoints() //Points awarded upon completion
     {
         double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;
@@ -16,9 +9,10 @@ public class SimpleGoal : Goal
         //To see it visualized open desmos graphing calculator and past this in: 1.155^{\left(x+39\right)}-165
         return pointsToAward;
     }
-    public override void CompleteGoal()
+    public override double CompleteGoal()
     {
         _isComplete = true;
+        return AwardPoints();
     }
     public override void DesplayGoal()
     {
