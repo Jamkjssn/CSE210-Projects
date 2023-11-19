@@ -93,5 +93,7 @@ public class Profile
         Console.WriteLine($"Goal Completion Ratio: {_goalCompletionRatio}");
         Console.WriteLine($"Current Login Streak: {_loginStreak}");
         Console.WriteLine($"Longest Login Streak: {_longestLoginStreak}");
+        Console.WriteLine("Press \"Enter\" when you're ready to return to the Main Menu");
+        while (Console.ReadKey().Key != ConsoleKey.Enter){}
     }
 }

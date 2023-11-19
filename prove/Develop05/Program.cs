@@ -28,13 +28,10 @@ class Program
                 activeprofile = profile1;
             }
         }
-
         bool done = false;
         while (!done)
         {
-            //Call Menu() to get to the main menu, this will return an int corresponding to their choice
-            int menuchoice = MainMenu();
-            //Options:        
+            int menuchoice = MainMenu(); //Call Menu() to get to the main menu, this will return an int corresponding to their choice
             if (menuchoice == 1) //Create Goal
             {
                 GoalCreation();
@@ -50,6 +47,7 @@ class Program
             else if (menuchoice == 4) //View Profile
             {
                 //Add desplay profile function in Profile
+                activeprofile.DisplayProfile();
             }
             else if (menuchoice == 5) //Help
             {
