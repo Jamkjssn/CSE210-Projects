@@ -29,4 +29,8 @@ public class Goal
     {
         //Setting the goal will be different for each goal type. 
     }
+    public virtual void DesplayGoal()
+    {
+        //Desplaying the goal, this will be called any time the user wants to see their goals
+    }
 }
