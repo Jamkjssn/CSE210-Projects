@@ -2,6 +2,8 @@ public class ChecklistGoal : Goal
 {
     private int _completedParts;
     private int _totalParts;
+    private double _finishPoints;
+    private double _progressPoints;
     public ChecklistGoal(string name, string goalType = "ChecklistGoal") : base(goalType, name) 
     {
         _completedParts = 0;
@@ -16,6 +18,7 @@ public class ChecklistGoal : Goal
         {
             _completedParts++;
         }
+        AwardPoints();
     }
     public override void CompleteGoal()
     {
@@ -26,10 +29,24 @@ public class ChecklistGoal : Goal
         _description = description;
         _importanceRating = importanceRating;
         _difficultyRating = difficultyRating;
+        double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;
+        _finishPoints = (-165 + Math.Pow(1.155, weight + 39))*0.5; 
+        _progressPoints = _finishPoints/4;
     }
     public void SetParts(int totalParts)
     {
         _totalParts = totalParts;
+    }
+    public override double AwardPoints()
+    {
+        if (_isComplete)
+        {
+            return _finishPoints;
+        }
+        else
+        {
+            return _progressPoints;
+        }
     }
     public override void DesplayGoal()
     {
