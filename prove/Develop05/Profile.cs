@@ -29,7 +29,9 @@ public class Profile
         _goalsSet = 0;
         _goalCompletionRatio = 1;
         _loginStreak = 0;
+        _longestLoginStreak = 0;
         _currentgoals = new();
+        _completedgoals = new();
         _autosave = true;
     }
     public void CalculateCompletionRatio() //Recalculate _goalCompletionRatio
@@ -130,7 +132,8 @@ public class Profile
     }
     public bool LoadProfile(string username) //Load a profile and goals from a file
     {
-        string fileName = $"{username}.dat";
+        _username = username;
+        string fileName = $"{_username}.dat";
         if (File.Exists(fileName))
         {
             using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
