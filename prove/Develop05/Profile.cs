@@ -1,3 +1,8 @@
+using System.Reflection.Metadata;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 public class Profile
 {
     private string _username;
@@ -42,9 +47,10 @@ public class Profile
     {
         _goalsCompleted++;
     }
-    public void AddGoalSet() // Add 1 to _goalsSet
+    public void AddGoalSet(Goal goal) // Add 1 to _goalsSet
     {
         _goalsSet++;
+        _currentgoals.Add(goal);
     }
     public void CheckLoginStreak()  // This one is a bit more complicated, so we'll wait to create it.
     {
@@ -54,7 +60,14 @@ public class Profile
     public void ChangeUsername(string newusername) //Change the profile Username
     {
         //I still need to figure out how this will work with the file being saved to
+        string oldfileName = $"{_username}.dat";
+        string newfileName = $"{newusername}.dat";
         _username = newusername;
+        if (File.Exists(oldfileName))
+        {
+            File.Move(oldfileName, newfileName);
+        }
+        Console.WriteLine($"Your username has successfully been changed to {_username}");
     }
     public void DisplayGoals() //Display the users goals
     {
@@ -84,16 +97,62 @@ public class Profile
     }
     public void DisplayProfile() //Display profile information to the user
     {
-        Console.WriteLine($"\t\t{_username}s Profile:");
-        Console.WriteLine($"Rank: {_rankAdjective} {_rankTitle}");
-        Console.WriteLine($"Current Points: {_experiencePoints}");
-        Console.WriteLine($"Total Points: {_lifetimeExperiencePoints}");
-        Console.WriteLine($"Goals Set: {_goalsSet}");
-        Console.WriteLine($"Goals Completed:{_goalsCompleted}");
-        Console.WriteLine($"Goal Completion Ratio: {_goalCompletionRatio}");
-        Console.WriteLine($"Current Login Streak: {_loginStreak}");
-        Console.WriteLine($"Longest Login Streak: {_longestLoginStreak}");
+        Console.WriteLine($"\t\t{_username}s Profile:\n");
+        Console.WriteLine($"Rank:\t {_rankAdjective} {_rankTitle}");
+        Console.WriteLine($"Current Points:\t\t {_experiencePoints}");
+        Console.WriteLine($"Total Points:\t\t {_lifetimeExperiencePoints}");
+        Console.WriteLine($"Goals Set:\t\t {_goalsSet}");
+        Console.WriteLine($"Goals Completed:\t {_goalsCompleted}");
+        Console.WriteLine($"Goal Completion Ratio:\t {_goalCompletionRatio}");
+        Console.WriteLine($"Current Login Streak:\t {_loginStreak}");
+        Console.WriteLine($"Longest Login Streak:\t {_longestLoginStreak}");
         Console.WriteLine("Press \"Enter\" when you're ready to return to the Main Menu");
         while (Console.ReadKey().Key != ConsoleKey.Enter){}
+    }   
+    public void SaveProfile() // Save the current Profile and Goals
+    {
+        #pragma warning disable SYSLIB0011 // The binary formatter being used is obsolete for security reasons. But this does not concern us in this case. 
+        string fileName = $"{_username}.dat";
+        using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+        {
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+            // Get all properties of the class using reflection
+            PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            // Serialize and write each property to the file
+            foreach (PropertyInfo property in properties)
+            {
+                object propertyValue = property.GetValue(this);
+                binaryFormatter.Serialize(fileStream, propertyValue);
+            }
+        }
+    }
+    public bool LoadProfile(string username) //Load a profile and goals from a file
+    {
+        string fileName = $"{username}.dat";
+        if (File.Exists(fileName))
+        {
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+                // Get all properties of the class using reflection
+                PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+                // Deserialize and set each property value from the file
+                foreach (PropertyInfo property in properties)
+                {
+                    object deserializedValue = binaryFormatter.Deserialize(fileStream);
+                    property.SetValue(this, deserializedValue);
+                }
+            }
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("No save file for that username was found.");
+            return false;
+        }
     }
 }

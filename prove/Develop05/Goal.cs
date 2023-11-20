@@ -26,7 +26,7 @@ public class Goal
         //Polymorphism method. This will be different in inherited classes.
         return -1;
     }
-    public virtual void Setgoal(string description, int importanceRating, int difficultyRating)
+    public virtual void Setgoal(string description, double importanceRating, double difficultyRating)
     {
         _description = description; //Set the values to what was provided by the user
         _importanceRating = importanceRating;

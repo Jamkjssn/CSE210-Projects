@@ -20,7 +20,7 @@ public class ChecklistGoal : Goal
         }
         return AwardPoints();
     }
-    public override void Setgoal(string description, int importanceRating, int difficultyRating)
+    public override void Setgoal(string description, double importanceRating, double difficultyRating)
     {
         _description = description;
         _importanceRating = importanceRating;

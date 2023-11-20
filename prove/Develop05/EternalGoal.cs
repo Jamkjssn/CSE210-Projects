@@ -11,7 +11,7 @@ public class EternalGoal : Goal
         //You need to figure out more about DateTime before you can write this
         //This will also edit streakMultiplier when tis called
     }
-    public override void Setgoal(string description, int importanceRating, int difficultyRating) //Initial goal set, determines points as well
+    public override void Setgoal(string description, double importanceRating, double difficultyRating) //Initial goal set, determines points as well
     {
         base.Setgoal(description, importanceRating, difficultyRating);
         double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;

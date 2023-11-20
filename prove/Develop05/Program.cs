@@ -1,6 +1,7 @@
 using System;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks.Dataflow;
 
 class Program
 {
@@ -8,16 +9,40 @@ class Program
     {
         Console.WriteLine("Welcome to the Eternal Quest!");
         Console.WriteLine("Have you already created a profile?(y/n) "); //Figure out if they have a profile already
-        string profile = Console.ReadLine();
+        string profile = Console.ReadLine().ToLower();
 
         Profile activeprofile = new("null"); // Creating this here but it will be replaced in either case.
 
-        if (profile == "y") //If they have one call Load() to bring it in
+        if (profile == "y") //If they have one get the username and attempt to load it
         {
-            activeprofile = ProfileLoader();
+            Console.WriteLine("What was the username of that profile? ");
+            string username = Console.ReadLine();
+            bool profileFound = false;
+            while (!profileFound)
+            {
+            profileFound = activeprofile.LoadProfile(username);
+            if (!profileFound) // This runs if the username doens't bring up a file. 
+            {
+                Console.WriteLine("Sorry but that username is not associated with a known save file.");
+                Console.WriteLine("Would you like to try again?(y/n) ");
+                string retry = Console.ReadLine().ToLower();
+                if (retry == "y")
+                {
+                    Console.WriteLine("What is the Username of your profile? ");
+                    username = Console.ReadLine();
+                }
+                else
+                {
+                    profile = "n"; // By changing this the profile construction will run.
+                }
+            }
+            }
         }
-        else //If not then use the constructor of Profile and make one
+        if (profile != "y")//If not then use the constructor of Profile and make one
         {
+            bool profileCreated = false;
+            while (!profileCreated) //Run through this until they settle on a username and the profile is created. 
+            {
             Console.WriteLine("Choose a Username to use for your profile. Pick something that you'll remember: ");
             string username = Console.ReadLine();
             Console.WriteLine($"Are you sure that you'd like to use \"{username}\" as your username?\n(y/n)");
@@ -26,6 +51,8 @@ class Program
             {
                 Profile profile1 = new(username);
                 activeprofile = profile1;
+                profileCreated = true;
+            }
             }
         }
         bool done = false;
@@ -34,7 +61,7 @@ class Program
             int menuchoice = MainMenu(); //Call Menu() to get to the main menu, this will return an int corresponding to their choice
             if (menuchoice == 1) //Create Goal
             {
-                GoalCreation();
+                GoalCreation(activeprofile);
             }
             else if (menuchoice == 2) //View Goals
             {
@@ -124,7 +151,7 @@ class Program
                     }
                     else if (settignsMenuChoice == 3) // Save Profile and Goals
                     {
-                        Save();
+                        activeprofile.SaveProfile();
                         Console.WriteLine("Your current profile and goals have been saved");
                     }
                     else if (settignsMenuChoice == 4) // Quit
@@ -141,7 +168,7 @@ class Program
             else if (menuchoice == 7) //Quit
             {
                 Console.WriteLine("Goodbye, Dont forget your goals!!!");
-                Save();
+                activeprofile.SaveProfile();
                 done = true;
             }
             else //Invalid input
@@ -164,29 +191,8 @@ class Program
             Console.WriteLine("5. Help");
             Console.WriteLine("6. Settings");
             Console.WriteLine("7. Quit");
-            Console.WriteLine("\t\t What would you like to do? ");
-            string userchoice = Console.ReadLine();
-            int intchoice = -1;
-            try
-            {
-                intchoice = int.Parse(userchoice);
-            }
-            catch
-            {
-                Console.WriteLine("Make sure to enter your choice as a number");
-            }
-
-            if (intchoice > 0 || intchoice < 8)
-            {
-                return intchoice;
-            }
-            else
-            {
-                if (intchoice != -1)
-                {
-                    Console.WriteLine("Enter your choice as a number 1-7");
-                }
-            }
+            int intchoice = SetInt("\t\t What would you like to do? ", 7, 1);
+            return intchoice;
         }
     }
     public static int HelpMenu()
@@ -200,29 +206,8 @@ class Program
             Console.WriteLine("2. Streak Savers");
             Console.WriteLine("3. Report a problem");
             Console.WriteLine("4. Quit");
-            Console.WriteLine("\t\t Select a choice from the menu? ");
-            string userchoice = Console.ReadLine();
-            int intchoice = -1;
-            try
-            {
-                intchoice = int.Parse(userchoice);
-            }
-            catch
-            {
-                Console.WriteLine("Make sure to enter your choice as a number");
-            }
-
-            if (intchoice > 0 || intchoice < 5)
-            {
-                return intchoice;
-            }
-            else
-            {
-                if (intchoice != -1)
-                {
-                    Console.WriteLine("Enter your choice as a number 1-7");
-                }
-            }
+            int intchoice = SetInt("\t\t What would you like to do? ", 4, 1);
+            return intchoice;
         }
     }
     public static int SettingsMenu()
@@ -235,47 +220,145 @@ class Program
             Console.WriteLine("2. Toggle Autosave");
             Console.WriteLine("3. Save Profile and Goals");
             Console.WriteLine("4. Quit");
-            Console.WriteLine("\t\t Select a choice from the menu? ");
-            string userchoice = Console.ReadLine();
-            int intchoice = -1;
+            int intchoice = SetInt("\t\t What would you like to do? ", 4, 1);
+            return intchoice;
+        }
+    }
+    public static void GoalCreation(Profile activeprofile)
+    {
+        //All code for creating a goal
+
+        //First ask them if they want to give the goal a name
+        Console.WriteLine("Would you like to give this goal a name?(y/n) ");
+        string isGoalNamed = Console.ReadLine().ToLower();
+        string goalName;
+        if (isGoalNamed == "y")
+        {
+            Console.WriteLine("What would you like the name of the goal to be? ");
+            goalName = Console.ReadLine();
+        }
+        else
+        {
+            goalName = "empty";
+        }
+        //Then have them set the goal.
+        Console.WriteLine("What is your Goal? ");
+        string description = Console.ReadLine();
+
+        //Now get importance and difficulty
+        double importance = Setdouble("important");
+        double difficulty = Setdouble("difficult");
+
+        //Once set they'll pick which type of goal it will be. 
+            Console.WriteLine("Goals are seperated into three main types:");
+            Console.WriteLine("\t1. Simple Goals: Goals that are done only one time and then are complete");
+            Console.WriteLine("\t2. Eternal Goals: Goals that are never complete and must be done repetatively");
+            Console.WriteLine("\t3. Checklist Goals: Goals that are split into multiple different parts or pieces to be completed");
+        int goalnumber = SetInt("Enter the number corresponding to the type of Goal you'd like to create? ", 3, 1);
+
+        //Then based on that ask them all necessary questions for that goal type. 
+        if (goalnumber == 1)// Simple Goal
+        {
+            SimpleGoal goal = new("simplegoal", goalName);
+            goal.Setgoal(description, importance, difficulty);
+            activeprofile.AddGoalSet(goal);
+            Console.WriteLine("Your new goal has successfully been set! ");
+        }
+        else if (goalnumber == 2) // Eternal Goal
+        {
+
+        }
+        else if (goalnumber == 3) // Checklist goal
+        {
+            ChecklistGoal goal = new("checklistgoal", goalName);
+            goal.Setgoal(description, importance, difficulty);
+            int parts = SetInt("How many parts will your checklist goal be split into? ", -1, 1);
+            goal.SetParts(parts);
+            activeprofile.AddGoalSet(goal);
+            Console.WriteLine($"Your checklist goal of {parts} parts has successfully been created!");
+        }
+    }
+    public static double Setdouble(string doubleName)
+    {
+        bool doubleSet = false;
+        double doubleValue = 0;
+        while (!doubleSet)
+        {
+            Console.WriteLine($"On a scale of 1-10, how {doubleName} is this goal?");
+            string stringdouble = Console.ReadLine();
             try
             {
-                intchoice = int.Parse(userchoice);
+                doubleValue = double.Parse(stringdouble);
+                if (doubleValue > 0 && doubleValue < 11)
+                {
+                    doubleSet = true;
+                }
+                else
+                {
+                    Console.WriteLine("Make sure to enter a value between 1 and 10");
+                }
             }
             catch
             {
-                Console.WriteLine("Make sure to enter your choice as a number");
-            }
-
-            if (intchoice > 0 || intchoice < 5)
-            {
-                return intchoice;
-            }
-            else
-            {
-                if (intchoice != -1)
-                {
-                    Console.WriteLine("Enter your choice as a number 1-7");
-                }
+                Console.WriteLine("Make sure to only enter a number from 1-10");
             }
         }
+        return doubleValue;
     }
-    public static void GoalCreation()
+    public static int SetInt(string question, int upperBound = -1, int lowerBound = -1)
     {
-        //All code for creating a goal
-    }
-    public static Profile ProfileLoader()
-    {
-        //Getting their profile
-        Profile redundant = new("null");
-        return redundant;
-    }
-    public static void Save()
-    {
-        //Save profile and goals to a file indicated by their username
-    }
-    public static void Load()
-    {
-        //Use a username to load profile and goals
+        int intToReturn = -1;
+        bool validInt = false;
+        while (!validInt)
+        {
+            Console.WriteLine($"{question}");
+            string useranswer = Console.ReadLine();
+            try
+            {
+                intToReturn = int.Parse(useranswer);
+                if (upperBound == -1 && lowerBound == -1)
+                {
+                    validInt = true;
+                }
+                else if (upperBound == -1)
+                {
+                    if (intToReturn >= lowerBound)
+                    {
+                        validInt = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Make sure you enter a whole number greater than {lowerBound}");
+                    }
+                }
+                else if (lowerBound == -1)
+                {
+                    if (intToReturn >= upperBound)
+                    {
+                        validInt = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Make sure you enter a whole number less than {upperBound}");
+                    }
+                }
+                else
+                {
+                    if (intToReturn <= upperBound && intToReturn >= lowerBound)
+                    {
+                        validInt = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Make sure you enter a whole number between {lowerBound} and {upperBound}");
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Make sure to enter your selection as a number");
+            }
+        }
+        return intToReturn;
     }
 }
