@@ -259,7 +259,7 @@ class Program
         //Then based on that ask them all necessary questions for that goal type. 
         if (goalnumber == 1)// Simple Goal
         {
-            SimpleGoal goal = new("simplegoal", goalName);
+            SimpleGoal goal = new(goalName);
             goal.Setgoal(description, importance, difficulty);
             activeprofile.AddGoalSet(goal);
             Console.WriteLine("Your new goal has successfully been set! ");
@@ -270,7 +270,7 @@ class Program
         }
         else if (goalnumber == 3) // Checklist goal
         {
-            ChecklistGoal goal = new("checklistgoal", goalName);
+            ChecklistGoal goal = new(goalName, "checklistgoal");
             goal.Setgoal(description, importance, difficulty);
             int parts = SetInt("How many parts will your checklist goal be split into? ", -1, 1);
             goal.SetParts(parts);

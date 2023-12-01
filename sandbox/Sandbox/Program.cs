@@ -12,10 +12,18 @@ using System.Threading;
 // Console.WriteLine("\nNice!");
 
 
-int _totalParts = 3;
+// int _totalParts = 3;
 
-for (int i = 0; i <= _totalParts-1; i++)
-{
-    Console.Write("[]");
-}
+// for (int i = 0; i <= _totalParts-1; i++)
+// {
+//     Console.Write("[]");
+// }
 // Console.WriteLine("\t ratio?");
+
+Student student = new();
+
+List<string> strings = new();
+
+strings.Add("testing stuff");
+
+string testing = student.GetType1(strings);

@@ -1,6 +1,6 @@
 public class SimpleGoal : Goal
 {
-    public SimpleGoal(string name, string goalType = "SimpleGoal") : base(goalType, name) {}
+    public SimpleGoal(string name, string goalType = "SimpleGoal") : base(name, goalType) {}
     public override double AwardPoints() //Points awarded upon completion
     {
         double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;
@@ -19,7 +19,7 @@ public class SimpleGoal : Goal
         if (_name != "empty")
         {
             Console.WriteLine($"{_name}");
-            
+            Console.WriteLine($"The name should be desplaying here, {_goaltype} is the type.");
         }
         if (_isComplete)
         {

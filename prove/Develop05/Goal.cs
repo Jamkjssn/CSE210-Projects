@@ -10,7 +10,7 @@ public class Goal
     protected double _difficultyRating;
     protected DateTime _creationTimestamp;
     protected DateTime _completionTimestamp;
-    public Goal(string goalType, string name)
+    public Goal(string name, string goalType)
     {
         _goaltype = goalType;
         _name = name;

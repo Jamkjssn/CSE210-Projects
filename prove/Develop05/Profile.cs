@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 public class Profile
 {
-    private string _username;
-    private string _rankAdjective;
-    private string _rankTitle;
-    private int _experiencePoints;
-    private int _lifetimeExperiencePoints;
-    private int _goalsCompleted;
-    private int _goalsSet;
-    private double _goalCompletionRatio;
-    private int _loginStreak;
-    private int _longestLoginStreak;
-    private List<Goal> _currentgoals;
-    private List<Goal> _completedgoals;
-    private bool _autosave;
+    private string _username { get; set; }
+    private string _rankAdjective { get; set; }
+    private string _rankTitle { get; set; }
+    private int _experiencePoints { get; set; }
+    private int _lifetimeExperiencePoints { get; set; }
+    private int _goalsCompleted { get; set; }
+    private int _goalsSet { get; set; }
+    private double _goalCompletionRatio { get; set; }
+    private int _loginStreak { get; set; }
+    private int _longestLoginStreak { get; set; }
+    private List<Goal> _currentgoals { get; set; }
+    private List<Goal> _completedgoals { get; set; }
+    private bool _autosave { get; set; }
     public Profile(string name)
     {
         _username = name;
@@ -113,49 +114,59 @@ public class Profile
     }   
     public void SaveProfile() // Save the current Profile and Goals
     {
-        #pragma warning disable SYSLIB0011 // The binary formatter being used is obsolete for security reasons. But this does not concern us in this case. 
-        string fileName = $"{_username}.dat";
-        using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+    string fileName = $"{_username}.txt"; // Set filename with username
+    string profileData = GetStringRepresentation(); // Get string representation
+    using (StreamWriter outputFile = new StreamWriter(fileName)) // Write file
         {
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-            // Get all properties of the class using reflection
-            PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-            // Serialize and write each property to the file
-            foreach (PropertyInfo property in properties)
-            {
-                object propertyValue = property.GetValue(this);
-                binaryFormatter.Serialize(fileStream, propertyValue);
-            }
+            outputFile.WriteLine($"{profileData}");
         }
     }
+
+public string GetStringRepresentation()
+{
+    StringBuilder representation = new StringBuilder();
+    representation.AppendLine("Profile:");
+
+    PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+    foreach (PropertyInfo property in properties)
+    {
+        if (property.PropertyType == (List<>));
+        string typeName = property.PropertyType.Name;
+        object value = property.GetValue(this);
+
+        representation.AppendLine($"{typeName}:{value}");
+    }
+
+    return representation.ToString();
+}
     public bool LoadProfile(string username) //Load a profile and goals from a file
     {
-        _username = username;
-        string fileName = $"{_username}.dat";
-        if (File.Exists(fileName))
-        {
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
+        return false;
+        // _username = username;
+        // string fileName = $"{_username}.dat";
+        // if (File.Exists(fileName))
+        // {
+        //     using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
+        //     {
+        //         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-                // Get all properties of the class using reflection
-                PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        //         // Get all properties of the class using reflection
+        //         PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-                // Deserialize and set each property value from the file
-                foreach (PropertyInfo property in properties)
-                {
-                    object deserializedValue = binaryFormatter.Deserialize(fileStream);
-                    property.SetValue(this, deserializedValue);
-                }
-            }
-            return true;
-        }
-        else
-        {
-            Console.WriteLine("No save file for that username was found.");
-            return false;
-        }
+        //         // Deserialize and set each property value from the file
+        //         foreach (PropertyInfo property in properties)
+        //         {
+        //             object deserializedValue = binaryFormatter.Deserialize(fileStream);
+        //             property.SetValue(this, deserializedValue);
+        //         }
+        //     }
+        //     return true;
+        // }
+        // else
+        // {
+        //     Console.WriteLine("No save file for that username was found.");
+        //     return false;
+        // }
     }
 }
