@@ -183,9 +183,22 @@ public class Profile
 
     return representation.ToString();
     }
-    public void CreateSavedProfile(string serializedData, string username)
+    public bool CreateSavedProfile(string username)
     {
-        string[] lines = serializedData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries); // Splits data by lines
+        _username = username;
+                
+        // string[] textstuff = { "It is working" };
+        // File.WriteAllLines($"{username}.txt", textstuff);
+        string filename = $"{username}.txt";
+        if (!File.Exists(filename)) //Check if the file exists, if not, return false
+        {
+            return false; 
+        }
+        try
+        {
+        string[] lines = System.IO.File.ReadAllLines(filename);
+        lines = lines.Skip(1).ToArray();
+        // string[] lines = serializedData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries); // Splits data by lines
 
         foreach (string line in lines)
         {
@@ -229,6 +242,13 @@ public class Profile
                 }
                 property.SetValue(this, goalsList); // Set the value to the list we've put together
             }
+        }
+        return true; // If you make it all the way through return true.
+        }
+        catch
+        {
+            Console.WriteLine("There was an error while loading your profile.");
+            return false;
         }
     }
     public void SetPropertyValue(PropertyInfo property, string value)
@@ -278,34 +298,5 @@ public class Profile
                 }
             }
         }
-    }
-    public bool LoadProfile(string username) //Load a profile and goals from a file
-    {
-        return false;
-        // _username = username;
-        // string fileName = $"{_username}.dat";
-        // if (File.Exists(fileName))
-        // {
-        //     using (FileStream fileStream = new FileStream(fileName, FileMode.Open))
-        //     {
-        //         BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-        //         // Get all properties of the class using reflection
-        //         PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-        //         // Deserialize and set each property value from the file
-        //         foreach (PropertyInfo property in properties)
-        //         {
-        //             object deserializedValue = binaryFormatter.Deserialize(fileStream);
-        //             property.SetValue(this, deserializedValue);
-        //         }
-        //     }
-        //     return true;
-        // }
-        // else
-        // {
-        //     Console.WriteLine("No save file for that username was found.");
-        //     return false;
-        // }
     }
 }

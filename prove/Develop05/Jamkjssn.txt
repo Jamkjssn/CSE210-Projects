@@ -1,0 +1,15 @@
+Profile:
+_username:Jamkjssn
+_rankAdjective:Placeholder
+_rankTitle:placeholder
+_experiencePoints:0
+_lifetimeExperiencePoints:0
+_goalsCompleted:0
+_goalsSet:0
+_goalCompletionRatio:1
+_loginStreak:0
+_longestLoginStreak:0
+_currentgoals:System.Collections.Generic.List`1[Goal]:
+_completedgoals:System.Collections.Generic.List`1[Goal]:
+_autosave:True
+

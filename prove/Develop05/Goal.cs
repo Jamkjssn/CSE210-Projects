@@ -22,7 +22,6 @@ public class Goal
     public Goal()
     {
     }
-
     public virtual double CompleteGoal()
     {
         //Polymorphism method. This will be different in inherited classes.
@@ -77,7 +76,9 @@ public class Goal
             else
             {
                 string[] propertyParts = propertystring.Split(",");
-                PropertyInfo property = this.GetType().GetProperty(propertyParts[0]); 
+                string propertyName = propertyParts[0];
+                // PropertyInfo property = this.GetType().GetProperty(propertyParts[0]); 
+                PropertyInfo property = this.GetType().GetProperty(propertyName);
                 string value = propertyParts[1];
 
                 if (property.PropertyType == typeof(string))

@@ -20,7 +20,7 @@ class Program
             bool profileFound = false;
             while (!profileFound)
             {
-            profileFound = activeprofile.LoadProfile(username);
+            profileFound = activeprofile.CreateSavedProfile(username);
             if (!profileFound) // This runs if the username doens't bring up a file. 
             {
                 Console.WriteLine("Sorry but that username is not associated with a known save file.");
@@ -34,6 +34,7 @@ class Program
                 else
                 {
                     profile = "n"; // By changing this the profile construction will run.
+                    profileFound = true;
                 }
             }
             }
