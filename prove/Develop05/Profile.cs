@@ -122,8 +122,25 @@ public class Profile
         }
     }
 
-public string GetStringRepresentation()
-{
+    public string GetStringRepresentation()
+    {
+    // I'd try and explain this better but it took ages to figure out. This saves the profile to a txt in the following format
+    // propertyName:propertyValue
+
+
+    // In the case of the lists of goals the format is as follows
+    // propertyName:propertyValue:Goals
+
+    // The goals are organized with this format
+    // :Goal~Goal~Goal
+    
+    // Individual goals are as follows
+    // GoalType`GoalProperty`GoalProperty`GoalProperty
+
+    // And Finally the goal properties are organized in the following format
+    // propertyName,propertyValue
+
+
     StringBuilder representation = new StringBuilder();
     representation.AppendLine("Profile:");
 
@@ -131,15 +148,137 @@ public string GetStringRepresentation()
 
     foreach (PropertyInfo property in properties)
     {
-        if (property.PropertyType == (List<>));
-        string typeName = property.PropertyType.Name;
+
+        string propertyName = property.Name;
         object value = property.GetValue(this);
 
-        representation.AppendLine($"{typeName}:{value}");
+        if (value is List<Goal>)
+        {
+            List<Goal> goals = (List<Goal>)value;
+            representation.Append($"{propertyName}:{value}:");
+            bool firstGoal = true;
+            foreach(Goal goal in goals)
+            {
+                if (firstGoal) // This will make sure the first goal doesn't pring the ~ before the seperations start
+                {
+                    firstGoal = false;
+                }
+                else
+                {
+                    representation.Append("~");
+                }
+                representation.Append(goal.GetStringRepresentationGoal());
+                if (goals.Count == 0)
+                {
+                    representation.Append("empty");
+                }
+            }
+            representation.AppendLine();
+        }
+        else
+        {
+        representation.AppendLine($"{propertyName}:{value}");
+        }
     }
 
     return representation.ToString();
-}
+    }
+    public void CreateSavedProfile(string serializedData, string username)
+    {
+        string[] lines = serializedData.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries); // Splits data by lines
+
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(':');
+
+            if (parts.Length == 2) // This is for the simple properties
+            {
+                PropertyInfo property = this.GetType().GetProperty(parts[0]);
+                string value = parts[1];
+                this.SetPropertyValue(property, value);
+            }
+            if (parts.Length > 2) // This only runs in the case of the Lists objects
+            {
+                string propertyName = parts[0];
+                PropertyInfo property = this.GetType().GetProperty(propertyName);
+                List<Goal> goalsList = new();
+                string[] goalList = parts[2].Split("~"); //Split the goals up
+                foreach(string goal in goalList)
+                {
+                    string[] goalProperties = goal.Split("`"); // This splits that goal into its properties
+                    string goalName = goalProperties[2].Split(",")[1]; // This cuts through to the name of the goal for initialization
+
+                    if (goalProperties[0] == "SimpleGoal") // This will initialize each goal as their type and add them to the list
+                    {
+                        SimpleGoal newGoal = new(goalName);
+                        newGoal.DeserializeGoal(goal);
+                        goalsList.Add(newGoal);
+                    }
+                    else if (goalProperties[0] == "ChecklistGoal")
+                    {
+                        ChecklistGoal newGoal = new(goalName);
+                        newGoal.DeserializeGoal(goal);
+                        goalsList.Add(newGoal);
+                    }
+                    else if (goalProperties[0] == "EternalGoal")
+                    {
+                        EternalGoal newGoal = new(goalName);
+                        newGoal.DeserializeGoal(goal);
+                        goalsList.Add(newGoal);
+                    }
+                }
+                property.SetValue(this, goalsList); // Set the value to the list we've put together
+            }
+        }
+    }
+    public void SetPropertyValue(PropertyInfo property, string value)
+    {
+        // This method converts the value back to its origional type and then sets it. 
+
+        if (property != null)
+        {
+            if (property.PropertyType == typeof(string))
+            {
+                property.SetValue(this, value);
+            }
+            else if (property.PropertyType == typeof(int))
+            {
+                try
+                {
+                    int intValue = int.Parse(value);
+                    property.SetValue(this, intValue);
+                }
+                catch
+                {
+                    Console.WriteLine("An error has occured and the profile will not load correctly");
+                }
+            }
+            else if (property.PropertyType == typeof(double))
+            {
+                try
+                {
+                    double doubleValue = double.Parse(value);
+                    property.SetValue(this, doubleValue);
+                }
+                catch
+                {
+                    Console.WriteLine("An error has occured and the profile will not load correctly");
+                }
+            }
+            else if (property.PropertyType == typeof(bool))
+            {
+                try
+                {
+                    bool boolValue = bool.Parse(value);
+                    property.SetValue(this, boolValue);
+                }
+                catch
+                {
+                    Console.WriteLine("An error has occured and the profil will not load correctly");
+                }
+            }
+        }
+    }
     public bool LoadProfile(string username) //Load a profile and goals from a file
     {
         return false;

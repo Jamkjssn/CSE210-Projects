@@ -26,4 +26,6 @@ List<string> strings = new();
 
 strings.Add("testing stuff");
 
-string testing = student.GetType1(strings);
+student.GetType1(strings);
+
+student.Testing();

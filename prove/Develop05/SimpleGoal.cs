@@ -1,3 +1,6 @@
+using System.Reflection;
+using System.Text;
+
 public class SimpleGoal : Goal
 {
     public SimpleGoal(string name, string goalType = "SimpleGoal") : base(name, goalType) {}
@@ -19,7 +22,6 @@ public class SimpleGoal : Goal
         if (_name != "empty")
         {
             Console.WriteLine($"{_name}");
-            Console.WriteLine($"The name should be desplaying here, {_goaltype} is the type.");
         }
         if (_isComplete)
         {
@@ -27,4 +29,5 @@ public class SimpleGoal : Goal
         }
         Console.WriteLine($"{_description}");
     }
+
 }

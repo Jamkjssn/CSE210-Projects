@@ -9,6 +9,7 @@ public class Student
     public string LastName { get; set; }
     public string Major { get; set; }
     public float GPA {get; set;}
+    private List<int> _testints {get; set;}
 
     // private string _firstName;
     // private string _lastName;
@@ -21,7 +22,13 @@ public class Student
         LastName = "Ethington";
         Major = "Computers";
         GPA = 4.0f;
-        Testing();
+        _testints = new()
+        {
+            5,
+            4,
+            8
+        };
+
     }
     public void Testing()
     {
@@ -29,6 +36,18 @@ public class Student
         foreach (PropertyInfo property in properties)
         {
             Console.WriteLine($"{property}");
+            string testname = property.Name;
+            Console.WriteLine(testname);
+            object value = property.GetValue(this);
+            if (value is List<int>)
+                {
+                    List<int> listValue = (List<int>)value;
+                    // Now you have access to the list.
+                    foreach (var item in listValue)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
         }
     }
     // public string GetStringRepresentation()
