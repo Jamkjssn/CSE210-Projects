@@ -30,5 +30,4 @@ public class SimpleGoal : Goal
         }
         Console.WriteLine($"Goal: {_description}");
     }
-
 }

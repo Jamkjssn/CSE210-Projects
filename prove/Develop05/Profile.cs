@@ -122,7 +122,7 @@ public class Profile
             outputFile.WriteLine($"{profileData}");
         }
     }
-    public string GetStringRepresentation()
+    public string GetStringRepresentation() // Get a string representation of the entire profile
     {
     // I'd try and explain this better but it took ages to figure out. This saves the profile to a txt in the following format
     // propertyName:propertyValue
@@ -183,7 +183,7 @@ public class Profile
 
     return representation.ToString();
     }
-    public bool CreateSavedProfile(string username)
+    public bool CreateSavedProfile(string username) // Creates the profile from a saved user file. 
     {
         _username = username;
                 
@@ -251,7 +251,7 @@ public class Profile
             return false;
         }
     }
-    public void SetPropertyValue(PropertyInfo property, string value)
+    public void SetPropertyValue(PropertyInfo property, string value) // Sets values of indevidual properties during profile loading
     {
         // This method converts the value back to its origional type and then sets it. 
 
