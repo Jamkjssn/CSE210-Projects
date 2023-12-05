@@ -19,15 +19,16 @@ public class SimpleGoal : Goal
     }
     public override void DesplayGoal()
     {
+        Console.WriteLine();
         if (_name != "empty")
         {
-            Console.WriteLine($"{_name}");
+            Console.WriteLine($"\t{_name}");
         }
         if (_isComplete)
         {
             Console.WriteLine($"{_description}\t(This goal has been completed)");
         }
-        Console.WriteLine($"{_description}");
+        Console.WriteLine($"Goal: {_description}");
     }
 
 }

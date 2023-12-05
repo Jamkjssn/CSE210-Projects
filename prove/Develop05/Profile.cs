@@ -78,8 +78,8 @@ public class Profile
         {
             goal.DesplayGoal();
         }
-        Console.WriteLine("Would you also like to view past completed goals? (y/n) ");
-        string viewcompleted = Console.ReadLine();
+        Console.WriteLine("\nWould you also like to view past completed goals? (y/n) ");
+        string viewcompleted = Console.ReadLine().ToLower();
         if (viewcompleted == "y")
         {
             foreach(Goal goal in _completedgoals)
@@ -87,8 +87,9 @@ public class Profile
                 goal.DesplayGoal();
             }
         }
-        Console.WriteLine("Press \"Enter\" when you're ready to return to the Main Menu");
+        Console.WriteLine("\nPress \"Enter\" when you're ready to return to the Main Menu");
         while (Console.ReadKey().Key != ConsoleKey.Enter){}
+        Console.Clear();
     }
     public bool GetAutosave() //Get value of Autosave
     {
@@ -121,7 +122,6 @@ public class Profile
             outputFile.WriteLine($"{profileData}");
         }
     }
-
     public string GetStringRepresentation()
     {
     // I'd try and explain this better but it took ages to figure out. This saves the profile to a txt in the following format
@@ -159,7 +159,7 @@ public class Profile
             bool firstGoal = true;
             foreach(Goal goal in goals)
             {
-                if (firstGoal) // This will make sure the first goal doesn't pring the ~ before the seperations start
+                if (firstGoal) // This will make sure the first goal doesn't add the ~ before the seperations start
                 {
                     firstGoal = false;
                 }
@@ -210,10 +210,10 @@ public class Profile
                 string value = parts[1];
                 this.SetPropertyValue(property, value);
             }
-            if (parts.Length > 2) // This only runs in the case of the Lists objects
+            if (parts.Length > 2 && parts[2] != "") // This only runs in the case of the Lists objects
             {
                 string propertyName = parts[0];
-                PropertyInfo property = this.GetType().GetProperty(propertyName);
+                PropertyInfo property = this.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 List<Goal> goalsList = new();
                 string[] goalList = parts[2].Split("~"); //Split the goals up
                 foreach(string goal in goalList)

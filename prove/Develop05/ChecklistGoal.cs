@@ -46,9 +46,10 @@ public class ChecklistGoal : Goal
     }
     public override void DesplayGoal()
     {
+        Console.WriteLine();
         if (_name != "empty")
         {
-            Console.WriteLine($"{_name}");
+            Console.WriteLine($"\t{_name}");
         }
         Console.WriteLine($"{_description}");
         for (int iCompleted = 0; iCompleted <= _completedParts-1; iCompleted++)

@@ -60,6 +60,7 @@ class Program
         while (!done)
         {
             int menuchoice = MainMenu(); //Call Menu() to get to the main menu, this will return an int corresponding to their choice
+            Console.Clear();
             if (menuchoice == 1) //Create Goal
             {
                 GoalCreation(activeprofile);
@@ -83,6 +84,7 @@ class Program
                 while (helpMenu)
                 {
                     int helpMenuChoice = HelpMenu();
+                    Console.Clear();
 
                     if (helpMenuChoice == 1) // How to set goals
                     {
@@ -114,6 +116,7 @@ class Program
                 while (settingsMenu) //Menu loop
                 {
                     int settignsMenuChoice = SettingsMenu();
+                    Console.Clear();
 
                     if (settignsMenuChoice == 1) // Edit Username
                     {
@@ -235,7 +238,7 @@ class Program
         string goalName;
         if (isGoalNamed == "y")
         {
-            Console.WriteLine("What would you like the name of the goal to be? ");
+            Console.WriteLine("\nWhat would you like the name of the goal to be? ");
             goalName = Console.ReadLine();
         }
         else
@@ -243,12 +246,13 @@ class Program
             goalName = "empty";
         }
         //Then have them set the goal.
-        Console.WriteLine("What is your Goal? ");
+        Console.WriteLine("\nWhat is your Goal? ");
         string description = Console.ReadLine();
 
         //Now get importance and difficulty
         double importance = Setdouble("important");
         double difficulty = Setdouble("difficult");
+        Console.Clear();
 
         //Once set they'll pick which type of goal it will be. 
             Console.WriteLine("Goals are seperated into three main types:");
@@ -264,6 +268,7 @@ class Program
             goal.Setgoal(description, importance, difficulty);
             activeprofile.AddGoalSet(goal);
             Console.WriteLine("Your new goal has successfully been set! ");
+            Console.Clear();
         }
         else if (goalnumber == 2) // Eternal Goal
         {
@@ -273,10 +278,14 @@ class Program
         {
             ChecklistGoal goal = new(goalName, "checklistgoal");
             goal.Setgoal(description, importance, difficulty);
+            Console.Clear();
             int parts = SetInt("How many parts will your checklist goal be split into? ", -1, 1);
             goal.SetParts(parts);
             activeprofile.AddGoalSet(goal);
             Console.WriteLine($"Your checklist goal of {parts} parts has successfully been created!");
+            Console.WriteLine("Press \"Enter\" to return to the Menu");
+            while (Console.ReadKey().Key != ConsoleKey.Enter){}
+            Console.Clear();
         }
     }
     public static double Setdouble(string doubleName)
@@ -285,7 +294,7 @@ class Program
         double doubleValue = 0;
         while (!doubleSet)
         {
-            Console.WriteLine($"On a scale of 1-10, how {doubleName} is this goal?");
+            Console.WriteLine($"\nOn a scale of 1-10, how {doubleName} is this goal?");
             string stringdouble = Console.ReadLine();
             try
             {

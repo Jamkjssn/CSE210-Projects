@@ -5,13 +5,13 @@ using System.Text;
 public class Goal
 {
     protected string _goaltype { get; set; }
-    protected string _name { get; set; } //Make giving the goal a name optional?
+    protected string _name { get; set; }
     protected string _description { get; set; }
     protected bool _isComplete { get; set; }
     protected double _importanceRating { get; set; }
     protected double _difficultyRating { get; set; }
-    protected DateTime _creationTimestamp { get; set; }
-    protected DateTime _completionTimestamp { get; set; }
+    // protected DateTime _creationTimestamp { get; set; }
+    // protected DateTime _completionTimestamp { get; set; }
     public Goal(string name, string goalType)
     {
         _goaltype = goalType;
@@ -78,7 +78,7 @@ public class Goal
                 string[] propertyParts = propertystring.Split(",");
                 string propertyName = propertyParts[0];
                 // PropertyInfo property = this.GetType().GetProperty(propertyParts[0]); 
-                PropertyInfo property = this.GetType().GetProperty(propertyName);
+                PropertyInfo property = this.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 string value = propertyParts[1];
 
                 if (property.PropertyType == typeof(string))
@@ -118,21 +118,21 @@ public class Goal
                     }
                     catch
                     {
-                        Console.WriteLine("An error has occured and the profil will not load correctly");
+                        Console.WriteLine("An error has occured and the profile will not load correctly");
                     }
                 }
-                else if (property.PropertyType == typeof(DateTime))
-                {
-                    try
-                    {
-                        DateTime dateTimeValue = DateTime.Parse(value);
-                        property.SetValue(this, dateTimeValue);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("An error has occured and the profil will not load correctly");
-                    }
-                }
+                // else if (property.PropertyType == typeof(DateTime))
+                // {
+                //     try
+                //     {
+                //         DateTime dateTimeValue = DateTime.Parse(value);
+                //         property.SetValue(this, dateTimeValue);
+                //     }
+                //     catch
+                //     {
+                //         Console.WriteLine("An error has occured and the profile will not load correctly");
+                //     }
+                // }
             }
         }
     }
