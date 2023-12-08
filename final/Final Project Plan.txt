@@ -1,0 +1,21 @@
+For the Final Project I'm planning on taking the Foundation 4 option. 
+
+
+Project 1:
+
+This Program will store Youtube videos with their information. This will include author, length, title, and comments left on the video
+
+
+Project 2:
+
+This Program will take in Customer information and calculate prices, shipping, and display shipping labels for use. 
+
+
+Project 3:
+
+This program will be used to create 3 different types of events and will generate marketing material for each type of event.
+
+
+Program 4:
+
+This program will take in information ragarding one of three different types of activities and then produce a summary of multiple different variables related to the acivity. 
