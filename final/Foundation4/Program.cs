@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("\nFoundation 4: Activity Stats\n");
+        Console.WriteLine("\n\tFoundation 4: Activity Stats\n");
 
         DateOnly date = new(2023, 12, 8);
         DateOnly tomorrow = new(2023, 12, 9);
