@@ -20,8 +20,8 @@ public class Profile
     public Profile(string name)
     {
         _username = name;
-        _rankAdjective = "Placeholder";
-        _rankTitle = "placeholder";
+        _rankAdjective = "Beginner";
+        _rankTitle = "Goal Setter";
         _experiencePoints = 0;
         _lifetimeExperiencePoints = 0;
         _goalsCompleted = 0;
@@ -33,6 +33,7 @@ public class Profile
         _currentgoals = new();
         _completedgoals = new();
         _autosave = true;
+        _logins = new();
         CheckLoginStreak();
     }
     public void CalculateCompletionRatio() //Recalculate _goalCompletionRatio
@@ -109,6 +110,7 @@ public class Profile
         {
             Console.WriteLine($"\nGoal #{index}");
             goal.DesplayGoal();
+            index++;
         }
         Console.WriteLine("\nWould you also like to view past completed goals? (y/n) ");
         string viewcompleted = Console.ReadLine().ToLower();
@@ -144,6 +146,7 @@ public class Profile
         Console.WriteLine($"Longest Login Streak:\t {_longestLoginStreak}");
         Console.WriteLine("Press \"Enter\" when you're ready to return to the Main Menu");
         while (Console.ReadKey().Key != ConsoleKey.Enter){}
+        Console.Clear();
     }   
     public void SaveProfile() // Save the current Profile and Goals
     {

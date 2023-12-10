@@ -2,9 +2,11 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.Clear();
         Console.WriteLine("Welcome to the Eternal Quest!");
-        Console.WriteLine("Have you already created a profile?(y/n) "); //Figure out if they have a profile already
+        Console.WriteLine("\nHave you already created a profile?(y/n) "); //Figure out if they have a profile already
         string profile = Console.ReadLine().ToLower();
+        Console.Clear();
 
         Profile activeprofile = new("null"); // Creating this here but it will be replaced in either case.
 
@@ -51,6 +53,7 @@ class Program
             }
             }
         }
+        Console.Clear();
         bool done = false;
         while (!done)
         {
@@ -276,10 +279,11 @@ class Program
         //All code for creating a goal
 
         //First ask them if they want to give the goal a name
-        Console.WriteLine("Would you like to give this goal a name?(y/n) ");
+        Console.Clear();
+        Console.WriteLine("Would you like to give this goal a name? (yes/no) ");
         string isGoalNamed = Console.ReadLine().ToLower();
         string goalName;
-        if (isGoalNamed == "y")
+        if (isGoalNamed == "yes")
         {
             Console.WriteLine("\nWhat would you like the name of the goal to be? ");
             goalName = Console.ReadLine();
@@ -346,6 +350,7 @@ class Program
         double doubleValue = 0;
         while (!doubleSet)
         {
+            Console.Clear();
             Console.WriteLine($"\nOn a scale of 1-10, how {doubleName} is this goal?");
             string stringdouble = Console.ReadLine();
             try
@@ -357,14 +362,17 @@ class Program
                 }
                 else
                 {
+                    Console.Clear();
                     Console.WriteLine("Make sure to enter a value between 1 and 10");
                 }
             }
             catch
             {
+                Console.Clear();
                 Console.WriteLine("Make sure to only enter a number from 1-10");
             }
         }
+        Console.Clear();
         return doubleValue;
     }
     public static int SetInt(string question, int upperBound = -1, int lowerBound = -1)
