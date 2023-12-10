@@ -30,4 +30,13 @@ public class SimpleGoal : Goal
         }
         Console.WriteLine($"Goal: {_description}");
     }
+    public override int EditGoal()
+    {
+        int selection = base.EditGoal();
+        if(selection == 5)
+        {
+            Console.WriteLine("Since this is a simple goal there are no other things thac can be edited.");
+        }
+        return 0;
+    }
 }

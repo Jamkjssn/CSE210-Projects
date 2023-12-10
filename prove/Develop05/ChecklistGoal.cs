@@ -36,11 +36,17 @@ public class ChecklistGoal : Goal
             }
         }
         double pointsToAward = 0;
+        if(_completedParts == _totalParts && intPartsCompleted == 0)
+        {
+            _isComplete = true;
+            pointsToAward += AwardPoints();
+        }
         for(int i = intPartsCompleted; i > 0; i--)
         {
             if (_completedParts+1 == _totalParts)
             {
                 _isComplete = true;
+                _completedParts++;
                 pointsToAward += AwardPoints();
             }
             else
@@ -92,5 +98,51 @@ public class ChecklistGoal : Goal
             Console.Write("[ ]");
         }
         Console.WriteLine($"\t{_completedParts}/{_totalParts} Completed");
+    }
+    public override int EditGoal()
+    {
+        int selection = base.EditGoal();
+        if (selection == 5)
+        {
+            Console.WriteLine("Since this is a Checklist Goal the only other thing to edit is the number of parts");
+            Console.WriteLine("Would you like to edit this? (yes/no)");
+            string answer = Console.ReadLine();
+            if(answer.ToLower() == "yes")
+            {
+                bool finished = false;
+                while(!finished)
+                {
+                    Console.WriteLine("What would you like the new number of parts to be?");
+                    string numParts = Console.ReadLine();
+                    try
+                    {
+                        int intParts = int.Parse(numParts);
+                        if(intParts < _completedParts)
+                        {
+                            Console.WriteLine("Your goal doesn't have that many parts left to complete");
+                        }
+                        else if(intParts == _completedParts)
+                        {
+                            Console.WriteLine("Since you've subtracted the exact amount of parts left to do, your goal is complete!");
+                            Console.WriteLine("Go to report goal progress and report a completion of 0 parts to claim your points and mark this goal as finished");
+                            _totalParts = intParts;
+                            finished = true;
+                        }
+                        else
+                        {
+                            _totalParts = intParts;
+                            Console.WriteLine($"Your goal is now comprised of {intParts} parts");
+                            finished = true;
+                        }
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Please enter your number of parts as a number");
+                    }
+                }
+            }
+        }
+        return 0;
     }
 }

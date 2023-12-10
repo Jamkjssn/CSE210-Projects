@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Reflection;
 using System.Text;
 
@@ -35,9 +36,118 @@ public class Goal
         _difficultyRating = difficultyRating;
         //Before calling this get the info you need to set the goal
     }
-    public virtual void EditGoal()
+    public virtual int EditGoal()
     {
-        //Editing Goal will be different for each class, base represents the simple goal
+        //Editing Goal will be different for each class, but this bit will always be the same.
+        bool editingMenu = true;
+        int intSelection = 0;
+        while (editingMenu)
+        {
+            Console.WriteLine("Which aspect of this goal would you like to edit?");
+            Console.WriteLine("1. Name");
+            Console.WriteLine("2. Description");
+            Console.WriteLine("3. Importance Rating");
+            Console.WriteLine("4. Difficulty Rating");
+            Console.WriteLine("5. Other");
+            Console.WriteLine("6. Exit");
+            string selection = Console.ReadLine();
+            try
+            {
+                intSelection = int.Parse(selection);
+                if (intSelection < 1 || intSelection > 6)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter a number between 1 and 5");
+                }
+                else
+                {
+                    editingMenu = false;
+                }
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Please enter your choice as a number");
+            }
+        }
+        if (intSelection == 1)
+        {
+            Console.WriteLine("What would you like the new name of your goal to be?");
+            string name = Console.ReadLine();
+            _name = name;
+            Console.WriteLine("The name has successfully been changed");
+        }
+        else if (intSelection == 2)
+        {
+            Console.WriteLine("What would you like your goal description to be?");
+            string description = Console.ReadLine();
+            _description = description;
+            Console.WriteLine("The description has successfully been changed");
+        }
+        else if (intSelection == 3)
+        {
+            int intImportance = 0;
+            bool importance = true;
+            while (importance)
+            {
+                Console.WriteLine("What woudl you like your Importance Rating to be?");
+                string stringimportance = Console.ReadLine();
+                try
+                {
+                    intImportance = int.Parse(stringimportance);
+                    if (intImportance < 1 || intImportance > 10)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Please enter a number between 1 and 10");
+                    }
+                    else
+                    {
+                        importance = false;
+                    }
+                }
+                catch
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter your choice as a number");
+                }
+            }
+            Console.WriteLine("Your importance rating has successfully been changed");
+        }
+        else if (intSelection == 4)
+        {
+            int intDifficulty = 0;
+            bool difficulty = true;
+            while (difficulty)
+            {
+                Console.WriteLine("What would you like your Difficulty Rating to be?");
+                string stringdifficulty = Console.ReadLine();
+                try
+                {
+                    intDifficulty = int.Parse(stringdifficulty);
+                    if (intDifficulty < 1 || intDifficulty > 10)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Please enter a number between 1 and 10");
+                    }
+                    else
+                    {
+                        difficulty = false;
+                    }
+                }
+                catch
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter your choice as a number");
+                }
+            }
+            _difficultyRating = intDifficulty;
+            Console.WriteLine("Your difficulty rating has successfully been changed.");
+        }
+        else
+        {
+            Console.WriteLine("Editing Error");
+        }
+        return intSelection;
     }
     public virtual void DesplayGoal()
     {
