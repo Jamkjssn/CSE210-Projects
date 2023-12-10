@@ -35,6 +35,10 @@ public class Goal
         _difficultyRating = difficultyRating;
         //Before calling this get the info you need to set the goal
     }
+    public virtual void EditGoal()
+    {
+        //Editing Goal will be different for each class, base represents the simple goal
+    }
     public virtual void DesplayGoal()
     {
         //Desplaying the goal, this will be called any time the user wants to see their goals

@@ -374,57 +374,28 @@ public class Profile
     }
     public void RemoveGoal()
     {
-        bool selection = true;
-        int intIndex = 0;
-        while(selection) // Loop to get their selection
+        int removalindex = SelectGoal("delete");
+        if (removalindex != -1)
         {
-            DisplayGoals();
-            Console.WriteLine("Enter the number of the goal you want to delete, or enter 0 to go back");
-            string goalIndex = Console.ReadLine();
-            try
-            {
-                intIndex = int.Parse(goalIndex);
-                if (intIndex < 0 || intIndex > _currentgoals.Count())
-                {
-                    Console.Clear();
-                    Console.WriteLine("Enter the number of one of the goals\n");
-                }
-                else
-                {
-                    selection = false; // End loop
-                }
-            }
-            catch
-            {
-                Console.Clear();
-                Console.WriteLine("Make sure to enter a number\n");
-            }
-        }
-        if (intIndex-1 != -1)
-        {
-            Console.WriteLine("Are you sure you want to delete the following Goal? (yes/no) ");
-            _currentgoals[intIndex-1].DesplayGoal();
+            _currentgoals.RemoveRange(removalindex, 1);
+            Console.WriteLine("Your goal has been removed");
             Console.WriteLine("");
-            string answer = Console.ReadLine();
-            if (answer.ToLower() == "yes")
-            {
-                _currentgoals.RemoveRange(intIndex-1, 1);
-                Console.WriteLine("Your goal has been removed");
-                Console.WriteLine("");
-            }
         }
         Console.WriteLine("Returning to the Menu");
         Thread.Sleep(1500);
         Console.Clear();
     }
-    public void ReportProgress()
+    public int SelectGoal(string action)
     {
+        // Action is whatever it is youre doing. You're selectiong the goal you'd like to {action}
+        // Returns the index of the goal in your current goals list
+
         bool selection = true;
         int intIndex = 0;
         while(selection) // Loop to get their selection
         {
             DisplayGoals();
-            Console.WriteLine("Enter the number of the goal you'd like to report your progress on");
+            Console.WriteLine($"Enter the number of the goal you'd like to {action}, or enter 0 to go back");
                         string goalIndex = Console.ReadLine();
             try
             {
@@ -448,12 +419,22 @@ public class Profile
         if (intIndex-1 != -1)
         {
             _currentgoals[intIndex-1].DesplayGoal();
-            Console.WriteLine("Is this the goal you'd like to report progress on? (yes/no) ");
+            Console.WriteLine($"Are you sure this is the goal you'd like to {action}? (yes/no) ");
             string confirmation = Console.ReadLine();
             if (confirmation.ToLower() == "yes")
             {
-                Goal goal = _currentgoals[intIndex-1];
-                _currentgoals.RemoveRange(intIndex-1, 1);
+                return intIndex-1;
+            }
+        }
+        return -1; // If they say no or selected 0(exit)
+    }
+    public void ReportProgress()
+    {
+        int toReport = SelectGoal("report progress on");
+            if (toReport != -1)
+            {
+                Goal goal = _currentgoals[toReport];
+                _currentgoals.RemoveRange(toReport, 1);
                 double pointsawarded = goal.CompleteGoal();
                 _completedgoals.Add(goal);
                 _goalsCompleted += 1;
@@ -466,7 +447,14 @@ public class Profile
             Console.WriteLine("Returning to the menu");
             Thread.Sleep(1500);
             Console.Clear();
-        }
+    }
+    public void EditGoal()
+    {
+        int toEdit = SelectGoal("edit");
+        _currentgoals[toEdit].EditGoal();
+         Console.WriteLine("Returning to the menu");
+        Thread.Sleep(1500);
+        Console.Clear();
     }
     public void CheckRankup()
     {

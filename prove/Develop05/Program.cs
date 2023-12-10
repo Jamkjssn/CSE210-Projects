@@ -85,11 +85,11 @@ class Program
 
                     if (managementMenuChoice == 1) //  Report progress / Complete
                     {
-
+                        activeprofile.ReportProgress();
                     }
                     else if(managementMenuChoice == 2) // Edit a Goal
                     {
-
+                        
                     }
                     else if (managementMenuChoice == 3) // Delete a Goal
                     {
