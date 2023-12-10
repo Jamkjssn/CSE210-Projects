@@ -23,7 +23,8 @@ public class SimpleGoal : Goal
         }
         if (_isComplete)
         {
-            Console.WriteLine($"Goal: {_description}\t(This goal has been completed)");
+            Console.WriteLine($"Goal: {_description}");
+            Console.WriteLine($"(This goal has been completed)");
         }
         else
         {

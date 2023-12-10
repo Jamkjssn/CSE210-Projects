@@ -105,12 +105,19 @@ public class Profile
     }
     public void DisplayGoals() //Display the users goals
     {
-        int index = 1;
-        foreach(Goal goal in _currentgoals)
+        if (_currentgoals.Count == 0)
         {
-            Console.WriteLine($"\nGoal #{index}");
-            goal.DesplayGoal();
-            index++;
+            Console.WriteLine("No goals to display");
+        }
+        else
+        {
+            int index = 1;
+            foreach(Goal goal in _currentgoals)
+            {
+                Console.WriteLine($"\nGoal #{index}");
+                goal.DesplayGoal();
+                index++;
+            }
         }
         Console.WriteLine("\nWould you also like to view past completed goals? (y/n) ");
         string viewcompleted = Console.ReadLine().ToLower();
@@ -119,9 +126,18 @@ public class Profile
             DisplayCompletedGoals();
         }
         Console.WriteLine("\nPress \"Enter\" when you're ready to return to the Main Menu");
-        // while (Console.ReadKey().Key != ConsoleKey.Enter){}
-
+        while (Console.ReadKey().Key != ConsoleKey.Enter){}
         Console.Clear();
+    }
+    public void DipslayCurrentGoals()
+    {
+        int i = 1;
+        foreach(Goal goal in _currentgoals)
+        {
+            Console.WriteLine($"\nGoal #{i}");
+            goal.DesplayGoal();
+            i++;
+        }
     }
     public void DisplayCompletedGoals()
     {
@@ -142,11 +158,11 @@ public class Profile
     {
         Console.WriteLine($"\t\t{_username}s Profile:\n");
         Console.WriteLine($"Rank:\t {_rankAdjective} {_rankTitle}");
-        Console.WriteLine($"Current Points:\t\t {_experiencePoints:2F}");
-        Console.WriteLine($"Total Points:\t\t {_lifetimeExperiencePoints:2F}");
+        Console.WriteLine($"Current Points:\t\t {Math.Round(_experiencePoints, 2)}");
+        Console.WriteLine($"Total Points:\t\t {Math.Round(_lifetimeExperiencePoints, 2)}");
         Console.WriteLine($"Goals Set:\t\t {_goalsSet}");
         Console.WriteLine($"Goals Completed:\t {_goalsCompleted}");
-        Console.WriteLine($"Goal Completion Ratio:\t {_goalCompletionRatio:2F}");
+        Console.WriteLine($"Goal Completion Ratio:\t {Math.Round(_goalCompletionRatio, 2)}");
         Console.WriteLine($"Current Login Streak:\t {_loginStreak}");
         Console.WriteLine($"Longest Login Streak:\t {_longestLoginStreak}");
         Console.WriteLine("Press \"Enter\" when you're ready to return to the Main Menu");
@@ -395,19 +411,12 @@ public class Profile
     {
         // Action is whatever it is youre doing. You're selectiong the goal you'd like to {action}
         // Returns the index of the goal in your current goals list
-        int i = 1;
-        foreach(Goal goal in _currentgoals)
-        {
-            Console.WriteLine($"\nGoal #{i}");
-            goal.DesplayGoal();
-            i++;
-        }
         bool selection = true;
         int intIndex = 0;
         while(selection) // Loop to get their selection
         {
 
-            DisplayGoals();
+            DipslayCurrentGoals();
             Console.WriteLine($"Enter the number of the goal you'd like to {action}, or enter 0 to go back");
             string goalIndex = Console.ReadLine();
             try
@@ -462,7 +471,10 @@ public class Profile
     public void EditGoal()
     {
         int toEdit = SelectGoal("edit");
-        _currentgoals[toEdit].EditGoal();
+        if (toEdit != -1)
+        {
+            _currentgoals[toEdit].EditGoal();
+        }
          Console.WriteLine("Returning to the menu");
         Thread.Sleep(1500);
         Console.Clear();

@@ -44,6 +44,6 @@ public class EternalGoal : Goal
         }
         Console.WriteLine($"Goal: {_description}");
         Console.WriteLine($"TimeTable: {_timeTable}");
-        Console.WriteLine($"You've completed this goad {_numCompletions} times");
+        Console.WriteLine($"You've completed this goal {_numCompletions} times");
     }
 }

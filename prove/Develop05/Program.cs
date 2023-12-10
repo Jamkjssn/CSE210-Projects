@@ -266,7 +266,7 @@ class Program
         while (true)
         {
             Console.WriteLine("\t\tGoal Management");
-            Console.WriteLine("1. Finish/Report progress on a goal");
+            Console.WriteLine("1. Report completion / progress on a goal");
             Console.WriteLine("2. Edit Goal");
             Console.WriteLine("3. Delete a goal");
             Console.WriteLine("4. Quit");
