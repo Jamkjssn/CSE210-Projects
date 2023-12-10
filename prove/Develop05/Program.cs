@@ -84,7 +84,7 @@ class Program
                     }
                     else if(managementMenuChoice == 2) // Edit a Goal
                     {
-
+                        activeprofile.EditGoal();
                     }
                     else if (managementMenuChoice == 3) // Delete a Goal
                     {
@@ -310,12 +310,18 @@ class Program
             SimpleGoal goal = new(goalName);
             goal.Setgoal(description, importance, difficulty);
             activeprofile.AddGoalSet(goal);
-            Console.WriteLine("Your new goal has successfully been set! ");
             Console.Clear();
+            Console.WriteLine("Your new goal has successfully been set! ");
         }
         else if (goalnumber == 2) // Eternal Goal
         {
-
+            EternalGoal goal = new(goalName);
+            goal.Setgoal(description, importance, difficulty);
+            Console.WriteLine("How often should this goal be completed?");
+            string timetable = Console.ReadLine();
+            goal.SetTimetable(timetable);
+            Console.Clear();
+            Console.WriteLine("Your Eternal Goal has successfully been created");
         }
         else if (goalnumber == 3) // Checklist goal
         {
@@ -330,6 +336,9 @@ class Program
             while (Console.ReadKey().Key != ConsoleKey.Enter){}
             Console.Clear();
         }
+        Console.WriteLine("Returning to the menu");
+        Thread.Sleep(1500);
+        Console.Clear();
     }
     public static double Setdouble(string doubleName)
     {
