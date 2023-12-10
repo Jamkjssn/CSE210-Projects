@@ -116,14 +116,19 @@ public class Profile
         string viewcompleted = Console.ReadLine().ToLower();
         if (viewcompleted == "y")
         {
-            foreach(Goal goal in _completedgoals)
+            DisplayCompletedGoals();
+        }
+        Console.WriteLine("\nPress \"Enter\" when you're ready to return to the Main Menu");
+        // while (Console.ReadKey().Key != ConsoleKey.Enter){}
+
+        Console.Clear();
+    }
+    public void DisplayCompletedGoals()
+    {
+        foreach(Goal goal in _completedgoals)
             {
                 goal.DesplayGoal();
             }
-        }
-        Console.WriteLine("\nPress \"Enter\" when you're ready to return to the Main Menu");
-        while (Console.ReadKey().Key != ConsoleKey.Enter){}
-        Console.Clear();
     }
     public bool GetAutosave() //Get value of Autosave
     {
@@ -137,11 +142,11 @@ public class Profile
     {
         Console.WriteLine($"\t\t{_username}s Profile:\n");
         Console.WriteLine($"Rank:\t {_rankAdjective} {_rankTitle}");
-        Console.WriteLine($"Current Points:\t\t {_experiencePoints}");
-        Console.WriteLine($"Total Points:\t\t {_lifetimeExperiencePoints}");
+        Console.WriteLine($"Current Points:\t\t {_experiencePoints:2F}");
+        Console.WriteLine($"Total Points:\t\t {_lifetimeExperiencePoints:2F}");
         Console.WriteLine($"Goals Set:\t\t {_goalsSet}");
         Console.WriteLine($"Goals Completed:\t {_goalsCompleted}");
-        Console.WriteLine($"Goal Completion Ratio:\t {_goalCompletionRatio}");
+        Console.WriteLine($"Goal Completion Ratio:\t {_goalCompletionRatio:2F}");
         Console.WriteLine($"Current Login Streak:\t {_loginStreak}");
         Console.WriteLine($"Longest Login Streak:\t {_longestLoginStreak}");
         Console.WriteLine("Press \"Enter\" when you're ready to return to the Main Menu");
@@ -282,6 +287,8 @@ public class Profile
                     }
                     loginproperty.SetValue(this, loginDates);
                 }
+                else
+                {
                 string propertyName = parts[0];
                 PropertyInfo property = this.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 List<Goal> goalsList = new();
@@ -311,6 +318,7 @@ public class Profile
                     }
                 }
                 property.SetValue(this, goalsList); // Set the value to the list we've put together
+                }
             }
         }
         CheckLoginStreak();
@@ -387,20 +395,26 @@ public class Profile
     {
         // Action is whatever it is youre doing. You're selectiong the goal you'd like to {action}
         // Returns the index of the goal in your current goals list
-
+        int i = 1;
+        foreach(Goal goal in _currentgoals)
+        {
+            Console.WriteLine($"\nGoal #{i}");
+            goal.DesplayGoal();
+            i++;
+        }
         bool selection = true;
         int intIndex = 0;
         while(selection) // Loop to get their selection
         {
+
             DisplayGoals();
             Console.WriteLine($"Enter the number of the goal you'd like to {action}, or enter 0 to go back");
-                        string goalIndex = Console.ReadLine();
+            string goalIndex = Console.ReadLine();
             try
             {
                 intIndex = int.Parse(goalIndex);
                 if (intIndex < 0 || intIndex > _currentgoals.Count())
                 {
-                    Console.Clear();
                     Console.WriteLine("Enter the number of one of the goals\n");
                 }
                 else
@@ -410,7 +424,6 @@ public class Profile
             }
             catch
             {
-                Console.Clear();
                 Console.WriteLine("Make sure to enter a number\n");
             }
         }

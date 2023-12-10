@@ -63,7 +63,8 @@ public class ChecklistGoal : Goal
         _importanceRating = importanceRating;
         _difficultyRating = difficultyRating;
         double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;
-        _finishPoints = (-165 + Math.Pow(1.155, weight + 39))*0.5; 
+        _finishPoints = (-165 + Math.Pow(1.155, weight + 39))*0.5;
+        _finishPoints = Math.Round(_finishPoints, 2); 
         _progressPoints = _finishPoints/4;
     }
     public void SetParts(int totalParts)

@@ -324,6 +324,7 @@ class Program
             Console.WriteLine("How often should this goal be completed?");
             string timetable = Console.ReadLine();
             goal.SetTimetable(timetable);
+            activeprofile.AddGoalSet(goal);
             Console.Clear();
             Console.WriteLine("Your Eternal Goal has successfully been created");
         }

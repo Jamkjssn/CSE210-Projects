@@ -19,6 +19,7 @@ public class EternalGoal : Goal
         base.Setgoal(description, importanceRating, difficultyRating);
         double weight = (_difficultyRating + _importanceRating + _importanceRating)/3;
         _baseCompletePoints = (-165 + Math.Pow(1.155, weight + 39))*0.1;
+        _baseCompletePoints = Math.Round(_baseCompletePoints);
     }
     public override double CompleteGoal()
     {
