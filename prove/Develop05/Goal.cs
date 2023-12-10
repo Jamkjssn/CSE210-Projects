@@ -1,8 +1,5 @@
-using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Reflection;
 using System.Text;
-
 public class Goal
 {
     protected string _goaltype { get; set; }

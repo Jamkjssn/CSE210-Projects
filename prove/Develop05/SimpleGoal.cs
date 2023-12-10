@@ -1,6 +1,3 @@
-using System.Reflection;
-using System.Text;
-
 public class SimpleGoal : Goal
 {
     public SimpleGoal(string name, string goalType = "SimpleGoal") : base(name, goalType) {}

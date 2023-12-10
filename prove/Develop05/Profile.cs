@@ -1,10 +1,5 @@
-using System.Reflection.Metadata;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.ComponentModel;
 public class Profile
 {
     private string _username { get; set; }

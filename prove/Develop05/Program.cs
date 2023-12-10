@@ -1,8 +1,3 @@
-using System;
-using System.Runtime;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks.Dataflow;
-
 class Program
 {
     static void Main(string[] args)
@@ -89,7 +84,7 @@ class Program
                     }
                     else if(managementMenuChoice == 2) // Edit a Goal
                     {
-                        
+
                     }
                     else if (managementMenuChoice == 3) // Delete a Goal
                     {
