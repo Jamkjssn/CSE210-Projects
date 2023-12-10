@@ -1,24 +1,55 @@
 public class ChecklistGoal : Goal
 {
-    private int _completedParts;
-    private int _totalParts;
-    private double _finishPoints;
-    private double _progressPoints;
+    private int _completedParts {get; set;}
+    private int _totalParts {get; set;}
+    private double _finishPoints {get; set;}
+    private double _progressPoints {get; set;}
     public ChecklistGoal(string name, string goalType = "ChecklistGoal") : base(goalType, name) 
     {
         _completedParts = 0;
     }
     public override double CompleteGoal()
     {
-        if (_completedParts+1 == _totalParts)
+        bool numPartsSelect = true;
+        int intPartsCompleted = 0;
+        while(numPartsSelect)
         {
-            _isComplete = true;
+            Console.WriteLine("How many parts to this goal would you like to report as completed? ");
+            string partscompleted = Console.ReadLine();
+            try
+            {
+                intPartsCompleted = int.Parse(partscompleted);
+                if(intPartsCompleted < 0 || intPartsCompleted > _totalParts-_completedParts)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please Enter a valid number of Parts\n");
+                }
+                else
+                {
+                    numPartsSelect = false;
+                }
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Enter your selection as a number\n");
+            }
         }
-        else
+        double pointsToAward = 0;
+        for(int i = intPartsCompleted; i > 0; i--)
         {
-            _completedParts++;
+            if (_completedParts+1 == _totalParts)
+            {
+                _isComplete = true;
+                pointsToAward += AwardPoints();
+            }
+            else
+            {
+                _completedParts++;
+                pointsToAward += AwardPoints();
+            }
         }
-        return AwardPoints();
+        return pointsToAward;
     }
     public override void Setgoal(string description, double importanceRating, double difficultyRating)
     {
@@ -49,9 +80,9 @@ public class ChecklistGoal : Goal
         Console.WriteLine();
         if (_name != "empty")
         {
-            Console.WriteLine($"\t{_name}");
+            Console.WriteLine($"Goal Name: {_name}");
         }
-        Console.WriteLine($"{_description}");
+        Console.WriteLine($"Goal: {_description}");
         for (int iCompleted = 0; iCompleted <= _completedParts-1; iCompleted++)
         {
             Console.Write("[x]");

@@ -4,21 +4,24 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.ComponentModel;
 public class Profile
 {
     private string _username { get; set; }
     private string _rankAdjective { get; set; }
     private string _rankTitle { get; set; }
-    private int _experiencePoints { get; set; }
-    private int _lifetimeExperiencePoints { get; set; }
+    private double _experiencePoints { get; set; }
+    private double _lifetimeExperiencePoints { get; set; }
     private int _goalsCompleted { get; set; }
     private int _goalsSet { get; set; }
     private double _goalCompletionRatio { get; set; }
     private int _loginStreak { get; set; }
     private int _longestLoginStreak { get; set; }
+    private int _streakSavers { get; set; }
     private List<Goal> _currentgoals { get; set; }
     private List<Goal> _completedgoals { get; set; }
     private bool _autosave { get; set; }
+    private List<DateOnly> _logins { get; set; }
     public Profile(string name)
     {
         _username = name;
@@ -31,9 +34,11 @@ public class Profile
         _goalCompletionRatio = 1;
         _loginStreak = 0;
         _longestLoginStreak = 0;
+        _streakSavers = 1;
         _currentgoals = new();
         _completedgoals = new();
         _autosave = true;
+        CheckLoginStreak();
     }
     public void CalculateCompletionRatio() //Recalculate _goalCompletionRatio
     {
@@ -46,10 +51,6 @@ public class Profile
             _goalCompletionRatio = 1;
         }
     }
-    public void AddGoalCompleted() //Add 1 to _goalsCompleted
-    {
-        _goalsCompleted++;
-    }
     public void AddGoalSet(Goal goal) // Add 1 to _goalsSet
     {
         _goalsSet++;
@@ -59,6 +60,40 @@ public class Profile
     {
         // Use starting up the program to log their logins and save it in the profile class maybe?
         // Every time you increase the login streak also check to see if it's the new longest streak. 
+        DateOnly date = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        if (_logins.Count() == 0) // This profile has no logins
+        {
+            _logins.Add(date);
+            _loginStreak++;
+            _longestLoginStreak++;
+        }
+        else if (_logins[_logins.Count()-1].Day != date.Day) // Last Recorded Login was today (Do nothing)
+        {}
+        else if (_logins[_logins.Count()-1].Day != date.Day-1) // Today isnt the day after the last recorded login
+        {
+            if (_streakSavers == 0)
+            {
+                _loginStreak = 0; // Reset Streak
+                Console.WriteLine("Since you didn't log in yesterday your streak has been reset ");
+            }
+            else
+            {
+                _streakSavers--;
+                Console.WriteLine("A streak saver has been used to save your streak\n");
+            }
+        }
+        else if (_logins[_logins.Count()-1].Day == date.Day-1) // Today is the day after their last recorded login
+        {
+            _loginStreak++;
+            if (_loginStreak > _longestLoginStreak) // Update longest login streak
+            {
+                _longestLoginStreak = _loginStreak;
+            }
+        }
+        else // Error
+        {
+            Console.WriteLine("Login Streak Error");
+        }
     }
     public void ChangeUsername(string newusername) //Change the profile Username
     {
@@ -74,8 +109,10 @@ public class Profile
     }
     public void DisplayGoals() //Display the users goals
     {
+        int index = 1;
         foreach(Goal goal in _currentgoals)
         {
+            Console.WriteLine($"\nGoal #{index}");
             goal.DesplayGoal();
         }
         Console.WriteLine("\nWould you also like to view past completed goals? (y/n) ");
@@ -175,6 +212,25 @@ public class Profile
             }
             representation.AppendLine();
         }
+        else if (value is List<DateOnly>)
+        {
+            List<DateOnly> logins = (List<DateOnly>)value;
+            representation.Append($"{propertyName}:{value}:");
+            bool firstDate = true;
+            foreach(DateOnly date in logins)
+            {
+                if (firstDate)
+                {
+                    firstDate = false;
+                }
+                else
+                {
+                    representation.Append("~");
+                }
+                representation.Append(date);
+            }
+            representation.Append(":LoginDateList");
+        }
         else
         {
         representation.AppendLine($"{propertyName}:{value}");
@@ -212,6 +268,22 @@ public class Profile
             }
             if (parts.Length > 2 && parts[2] != "") // This only runs in the case of the Lists objects
             {
+                if (parts.Length == 4) //Takes Login Dates List
+                {
+                    PropertyInfo loginproperty = this.GetType().GetProperty("_logins", BindingFlags.NonPublic | BindingFlags.Instance);
+                    List<DateOnly> loginDates = new();
+                    string[] dates = parts[2].Split("~"); // Splits up the list of Dates
+                    foreach(string date in dates)
+                    {
+                        string[] dateParts = date.Split("/"); // Dates are given as Month/Day/Year as a string of ints
+                        int day = int.Parse(dateParts[1]);
+                        int month = int.Parse(dateParts[0]);
+                        int year = int.Parse(dateParts[2]);
+                        DateOnly dateOnly = new(year, month, day);
+                        loginDates.Add(dateOnly);
+                    }
+                    loginproperty.SetValue(this, loginDates);
+                }
                 string propertyName = parts[0];
                 PropertyInfo property = this.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 List<Goal> goalsList = new();
@@ -243,6 +315,7 @@ public class Profile
                 property.SetValue(this, goalsList); // Set the value to the list we've put together
             }
         }
+        CheckLoginStreak();
         return true; // If you make it all the way through return true.
         }
         catch
@@ -298,5 +371,167 @@ public class Profile
                 }
             }
         }
+    }
+    public void RemoveGoal()
+    {
+        bool selection = true;
+        int intIndex = 0;
+        while(selection) // Loop to get their selection
+        {
+            DisplayGoals();
+            Console.WriteLine("Enter the number of the goal you want to delete, or enter 0 to go back");
+            string goalIndex = Console.ReadLine();
+            try
+            {
+                intIndex = int.Parse(goalIndex);
+                if (intIndex < 0 || intIndex > _currentgoals.Count())
+                {
+                    Console.Clear();
+                    Console.WriteLine("Enter the number of one of the goals\n");
+                }
+                else
+                {
+                    selection = false; // End loop
+                }
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Make sure to enter a number\n");
+            }
+        }
+        if (intIndex-1 != -1)
+        {
+            Console.WriteLine("Are you sure you want to delete the following Goal? (yes/no) ");
+            _currentgoals[intIndex-1].DesplayGoal();
+            Console.WriteLine("");
+            string answer = Console.ReadLine();
+            if (answer.ToLower() == "yes")
+            {
+                _currentgoals.RemoveRange(intIndex-1, 1);
+                Console.WriteLine("Your goal has been removed");
+                Console.WriteLine("");
+            }
+        }
+        Console.WriteLine("Returning to the Menu");
+        Thread.Sleep(1500);
+        Console.Clear();
+    }
+    public void ReportProgress()
+    {
+        bool selection = true;
+        int intIndex = 0;
+        while(selection) // Loop to get their selection
+        {
+            DisplayGoals();
+            Console.WriteLine("Enter the number of the goal you'd like to report your progress on");
+                        string goalIndex = Console.ReadLine();
+            try
+            {
+                intIndex = int.Parse(goalIndex);
+                if (intIndex < 0 || intIndex > _currentgoals.Count())
+                {
+                    Console.Clear();
+                    Console.WriteLine("Enter the number of one of the goals\n");
+                }
+                else
+                {
+                    selection = false; // End loop
+                }
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Make sure to enter a number\n");
+            }
+        }
+        if (intIndex-1 != -1)
+        {
+            _currentgoals[intIndex-1].DesplayGoal();
+            Console.WriteLine("Is this the goal you'd like to report progress on? (yes/no) ");
+            string confirmation = Console.ReadLine();
+            if (confirmation.ToLower() == "yes")
+            {
+                Goal goal = _currentgoals[intIndex-1];
+                _currentgoals.RemoveRange(intIndex-1, 1);
+                double pointsawarded = goal.CompleteGoal();
+                _completedgoals.Add(goal);
+                _goalsCompleted += 1;
+                CalculateCompletionRatio();
+                _experiencePoints += pointsawarded;
+                _lifetimeExperiencePoints += pointsawarded;
+                Console.WriteLine($"Your progress has been marked and you've been awarded {pointsawarded} points!");
+                CheckRankup();
+            }
+            Console.WriteLine("Returning to the menu");
+            Thread.Sleep(1500);
+            Console.Clear();
+        }
+    }
+    public void CheckRankup()
+    {
+        if(_experiencePoints > 2000)
+        {
+            if (_rankAdjective != "Goal Legend" || _rankTitle != "Masterful")
+            {
+            Rankup();
+            }
+            else if (_experiencePoints > 20000)
+            {
+            _rankAdjective = "Ultimate";
+            Console.Clear();
+            Console.WriteLine("Congratulations. You've completed so many goals you've earned the secret rank of Ultimate Goal Legend");
+            Thread.Sleep(2000);
+            Console.Clear();
+            }
+        }
+    }
+    public void Rankup()
+    {
+        List<string> RankTitles = new()
+        {
+            "Goal Setter",
+            "Goal Achiever",
+            "Goal Master",
+            "Goal Legend"
+        };
+        List<string> RankAdjectives = new()
+        {
+            "Beginner",
+            "Novice",
+            "Adept",
+            "Professional",
+            "Masterful"
+        };
+        if(_rankAdjective != "Masterful") // Adjective isnt yet Masterful
+        {
+            for(int i = RankAdjectives.Count - 1; i >= 0; i--)
+            {
+                if (RankAdjectives[i] == _rankAdjective)
+                {
+                    _rankAdjective = RankAdjectives[i+1];
+                }
+            }
+        }
+        else if (_rankTitle != "Goal Legend") // Adjective is Masterful but rank isnt Goal Legend
+        {
+            for(int i = RankTitles.Count - 1; i >= 0; i--)
+            {
+                if (RankTitles[i] == _rankTitle)
+                {
+                    _rankTitle = RankTitles[i+1];
+                }
+            }
+            _rankAdjective = "Beginner";
+        }
+        else // Error
+        {
+            Console.WriteLine("Error with rankup system");
+        }
+        Console.WriteLine($"Congratulations! Your {_experiencePoints} points qualify you for an increase in Rank.");
+        Console.WriteLine($"You have moved to the rank of {_rankAdjective} {_rankTitle}!");
+        _streakSavers += 2;
+        _experiencePoints -= 2000;
+        Thread.Sleep(2500);
     }
 }

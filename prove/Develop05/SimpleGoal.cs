@@ -22,11 +22,11 @@ public class SimpleGoal : Goal
         Console.WriteLine();
         if (_name != "empty")
         {
-            Console.WriteLine($"\t{_name}");
+            Console.WriteLine($"Goal Name: {_name}");
         }
         if (_isComplete)
         {
-            Console.WriteLine($"{_description}\t(This goal has been completed)");
+            Console.WriteLine($"Goal: {_description}\t(This goal has been completed)");
         }
         Console.WriteLine($"Goal: {_description}");
     }

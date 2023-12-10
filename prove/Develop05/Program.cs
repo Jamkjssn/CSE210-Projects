@@ -69,9 +69,43 @@ class Program
             {
                 activeprofile.DisplayGoals();
             }
-            else if (menuchoice == 3) //Report Goal Progress
+            else if (menuchoice == 3) //Manage Goals
             {
-                //Figure this out later
+                // Goal Management Menu:
+                //      1. Complete/Report Progress on a goal
+                            // Display Goals
+                            // Ask them to select which goal they'd like to report their progress on
+                //      2. Edit a goal
+                //      3. Delete a goal
+                bool managementMenu = true;
+                while (managementMenu)
+                {
+                    int managementMenuChoice = GoalManagementMenu();
+                    Console.Clear();
+
+                    if (managementMenuChoice == 1) //  Report progress / Complete
+                    {
+
+                    }
+                    else if(managementMenuChoice == 2) // Edit a Goal
+                    {
+
+                    }
+                    else if (managementMenuChoice == 3) // Delete a Goal
+                    {
+                        activeprofile.RemoveGoal();
+                    }
+                    else if (managementMenuChoice == 4) // Exit
+                    {
+                        managementMenu = false;
+                        Console.WriteLine("Returning to main menu");
+                    }
+                    else // Error
+                    {
+                        Console.WriteLine("You done messed up A-Aaron");
+                    }
+                }
+
             }
             else if (menuchoice == 4) //View Profile
             {
@@ -190,7 +224,7 @@ class Program
             Console.WriteLine("\t\tMain Menu");
             Console.WriteLine("1. Create Goal");
             Console.WriteLine("2. View Goals");
-            Console.WriteLine("3. Report Goal Progress");
+            Console.WriteLine("3. Manage Goals");
             Console.WriteLine("4. View Profile");
             Console.WriteLine("5. Help");
             Console.WriteLine("6. Settings");
@@ -223,6 +257,20 @@ class Program
             Console.WriteLine("1. Edit Username");
             Console.WriteLine("2. Toggle Autosave");
             Console.WriteLine("3. Save Profile and Goals");
+            Console.WriteLine("4. Quit");
+            int intchoice = SetInt("\t\t What would you like to do? ", 4, 1);
+            return intchoice;
+        }
+    }
+    public static int GoalManagementMenu()
+    {
+        //Give Menu options and ask the user for what they want to do, Return number representing user choice
+        while (true)
+        {
+            Console.WriteLine("\t\tGoal Management");
+            Console.WriteLine("1. Finish/Report progress on a goal");
+            Console.WriteLine("2. Edit Goal");
+            Console.WriteLine("3. Delete a goal");
             Console.WriteLine("4. Quit");
             int intchoice = SetInt("\t\t What would you like to do? ", 4, 1);
             return intchoice;

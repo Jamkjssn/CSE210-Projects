@@ -18,10 +18,6 @@ public class Goal
         _name = name;
         _isComplete = false;
     }
-
-    public Goal()
-    {
-    }
     public virtual double CompleteGoal()
     {
         //Polymorphism method. This will be different in inherited classes.
@@ -43,7 +39,7 @@ public class Goal
     {
         //Desplaying the goal, this will be called any time the user wants to see their goals
     }
-    public virtual string GetStringRepresentationGoal()
+    public string GetStringRepresentationGoal()
     {
         StringBuilder stringRepresentation = new StringBuilder();
         PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
