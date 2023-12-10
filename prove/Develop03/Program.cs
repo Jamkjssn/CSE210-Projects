@@ -5,11 +5,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Welcome to scripture memorization!!!");// Initial Welcome message
+        Console.Clear();
+        Console.WriteLine("\nWelcome to scripture memorization!!!");// Initial Welcome message
         Console.WriteLine("What scripture would you like to memorize today?");
 
         string newreference = Console.ReadLine();
-        Console.WriteLine("");
+        Console.Clear();
         // string newreference = "1 Nephi 1:1";//Just for testing
         Reference reference = new();
         reference.SetReference(newreference);
@@ -21,8 +22,9 @@ class Program
         while (!memorized){
 
             PrintVerse(verse1, reference);
-            Console.WriteLine("Press Enter to hide another word. Otherwise enter \"exit\" to quit or \"back\" to reveal a hidden word.");
+            Console.WriteLine("\nPress Enter to hide another word. Otherwise enter \"exit\" to quit or \"back\" to reveal a hidden word.");
             string continueanswer = Console.ReadLine();
+            Console.Clear();
             if(continueanswer == "")
             {
                 memorized = ToggleHiddenWord(verse1, true);//This will hide one random non-hidden word
@@ -50,9 +52,12 @@ class Program
             Console.WriteLine("Would you like to try a new scripture? (yes/no) ");
         }
         string answer = Console.ReadLine();//Since the question is the same, this could be moved out of the if else statements. 
-        if(answer != "no")
+        if(answer.ToLower() == "no")
         {
             end = true;
+            Console.WriteLine("Goodbye then!");
+            Thread.Sleep(3000);
+            Console.Clear();
         }
         }
     }
