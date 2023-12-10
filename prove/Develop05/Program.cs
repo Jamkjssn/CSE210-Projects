@@ -121,14 +121,26 @@ class Program
                     if (helpMenuChoice == 1) // How to set goals
                     {
                         //Teach about SMART goals
+                        Console.Clear();
+                        Console.WriteLine("Still under development");
+                        Thread.Sleep(1500);
+                        Console.Clear();
                     }
                     else if (helpMenuChoice == 2) // Streak Savers
                     {
                         // Explain Streak Savers program
+                        Console.Clear();
+                        Console.WriteLine("Still under development");
+                        Thread.Sleep(1500);
+                        Console.Clear();
                     }
                     else if (helpMenuChoice == 3) // Report a Problem
                     {
                         // Give Contact info
+                        Console.Clear();
+                        Console.WriteLine("Still under development");
+                        Thread.Sleep(1500);
+                        Console.Clear();
                     }
                     else if (helpMenuChoice == 4) // Quit
                     {
