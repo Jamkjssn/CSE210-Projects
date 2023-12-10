@@ -3,16 +3,15 @@ using System.Globalization;
 public class Activity
 {
     private string _description { get; set; }
-    private List<string> _prompts { get; set; }
+    protected List<string> _prompts { get; set; }
     private int _duration { get; set; }
     private List<string> _animation = new(){"|","/","-","\\"};
     private string _activitytype;
     private Random _random = new();
-    public Activity(string description, string activitytype, List<string> prompts = null)
+    public Activity(string description, string activitytype)
     {
         //Constructor
         _description = description;
-        _prompts = prompts;
         _activitytype = activitytype;
     }
     public void Pause(int length)

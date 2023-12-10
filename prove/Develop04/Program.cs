@@ -28,27 +28,13 @@ class Program
             }
             else if (userchoice == 2) //Reflecting
             {
-                List<string> reflectionPrompts = new()
-                {
-                    "Think of a time when you stood up for someone else.",
-                    "Think of a time when you did something really difficult.",
-                    "Think of a time when you helped someone in need.",
-                    "Think of a time when you did something truly selfless."
-                };
-                Reflecting reflecting = new("This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.", reflectionPrompts);
+
+                Reflecting reflecting = new("This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.");
                 _reflectingSeconds += reflecting.GetDuration();
             }
             else if (userchoice == 3) //Listing
             {
-                List<string> listingPrompts = new()
-                {
-                    "Who are people that you appreciate?",
-                    "What are personal strengths of yours?",
-                    "Who are people that you have helped this week?",
-                    "When have you felt the Holy Ghost this month?",
-                    "Who are some of your personal heroes?"
-                };
-                Listing listing = new("This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.", listingPrompts);
+                Listing listing = new("This activity will help you reflect on the good things in your life by having you list as many things as you can in a certain area.");
                 _listingSeconds += listing.GetDuration();
             }
             else if (userchoice == 4)

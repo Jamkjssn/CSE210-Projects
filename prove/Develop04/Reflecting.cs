@@ -2,7 +2,7 @@ public class Reflecting : Activity
 {
     private List<string> _questions { get; set; }
     private Random _random = new();
-    public Reflecting(string description, List<string>prompts, string activity = "Reflecting Activity") : base(description, activity, prompts)
+    public Reflecting(string description, string activity = "Reflecting Activity") : base(description, activity)
     {
         _questions = new List<string>
         {
@@ -16,6 +16,15 @@ public class Reflecting : Activity
             "What did you learn about yourself through this experience?",
             "How can you keep this experience in mind in the future?"
         };
+        
+        _prompts = new()
+        {
+            "Think of a time when you stood up for someone else.",
+            "Think of a time when you did something really difficult.",
+            "Think of a time when you helped someone in need.",
+            "Think of a time when you did something truly selfless."
+        };
+
         Reflect();
     }
     public void Reflect()
