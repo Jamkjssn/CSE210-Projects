@@ -216,7 +216,10 @@ class Program
             else if (menuchoice == 7) //Quit
             {
                 Console.WriteLine("Goodbye, Dont forget your goals!!!");
-                activeprofile.SaveProfile();
+                if (activeprofile.GetAutosave())
+                {
+                    activeprofile.SaveProfile();
+                }
                 done = true;
             }
             else //Invalid input
